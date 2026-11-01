@@ -4,791 +4,599 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pow's Playground</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        /* Mặc định: Dark Mode */
+        /* CSS Variables - Liquid Glass Custom Themes */
         :root {
-            --bg-color: #0f1016;
-            --card-bg: #181924;
+            --bg-gradient: linear-gradient(135deg, #090a0f 0%, #12141c 50%, #060709 100%);
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-bg-hover: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            --glass-blur: blur(16px);
             --accent: #8b5cf6;
             --accent-hover: #7c3aed;
-            --text-main: #f8fafc;
+            --text-main: #ffffff;
             --text-secondary: #94a3b8;
-            --border-color: #2e3047;
-            --badge-bg: rgba(24, 25, 36, 0.85);
-            --meta-bg: #222433;
+            --sidebar-width: 260px;
         }
 
-        /* 1. Trắng Tối Giản */
         [data-theme="light"] {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
+            --bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 50%, #cbd5e1 100%);
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-bg-hover: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            --text-main: #0f172a;
+            --text-secondary: #334155;
             --accent: #6366f1;
             --accent-hover: #4f46e5;
-            --text-main: #0f172a;
-            --text-secondary: #64748b;
-            --border-color: #e2e8f0;
-            --badge-bg: rgba(255, 255, 255, 0.9);
-            --meta-bg: #f1f5f9;
         }
 
-        /* 2. Tím Neon */
-        [data-theme="violet"] {
-            --bg-color: #0d0914;
-            --card-bg: #171024;
-            --accent: #d946ef;
-            --accent-hover: #c026d3;
-            --text-main: #fae8ff;
-            --text-secondary: #a855f7;
-            --border-color: #3b1d54;
-            --badge-bg: rgba(23, 16, 36, 0.85);
-            --meta-bg: #26163b;
-        }
-
-        /* 3. Xanh Mint */
         [data-theme="mint"] {
-            --bg-color: #0c1412;
-            --card-bg: #14211d;
-            --accent: #10b981;
-            --accent-hover: #059669;
-            --text-main: #ecfdf5;
-            --text-secondary: #6ee7b7;
-            --border-color: #1f3a33;
-            --badge-bg: rgba(20, 33, 29, 0.85);
-            --meta-bg: #1b302a;
+            --bg-gradient: linear-gradient(160deg, #06241a 0%, #0a3828 50%, #03140e 100%);
+            --glass-bg: rgba(74, 222, 128, 0.06);
+            --glass-bg-hover: rgba(74, 222, 128, 0.12);
+            --glass-border: rgba(110, 231, 183, 0.3);
+            --glass-shadow: 0 8px 32px 0 rgba(2, 20, 14, 0.7);
+            --accent: #059669;
+            --accent-hover: #047857;
+            --text-main: #ffffff;
+            --text-secondary: #86efac;
         }
 
-        /* 4. Vàng Hổ Phách */
         [data-theme="amber"] {
-            --bg-color: #0f0d0a;
-            --card-bg: #1c1813;
-            --accent: #f59e0b;
-            --accent-hover: #d97706;
-            --text-main: #fffbeb;
-            --text-secondary: #fcd34d;
-            --border-color: #3b3021;
-            --badge-bg: rgba(28, 24, 19, 0.85);
-            --meta-bg: #292219;
+            --bg-gradient: linear-gradient(180deg, #38220f 0%, #221408 45%, #0f0a04 80%, #050402 100%);
+            --glass-bg: rgba(245, 158, 11, 0.05);
+            --glass-bg-hover: rgba(245, 158, 11, 0.12);
+            --glass-border: rgba(251, 191, 36, 0.3);
+            --glass-shadow: 0 8px 32px 0 rgba(10, 6, 2, 0.8);
+            --accent: #d97706;
+            --accent-hover: #b45309;
+            --text-main: #ffffff;
+            --text-secondary: #d4d4d8;
+        }
+
+        [data-theme="violet"] {
+            --bg-gradient: linear-gradient(135deg, #042142 0%, #153C6A 40%, #733E85 80%, #042142 100%);
+            --glass-bg: rgba(61, 224, 252, 0.07);
+            --glass-bg-hover: rgba(233, 119, 245, 0.15);
+            --glass-border: rgba(61, 224, 252, 0.5);
+            --glass-shadow: 0 8px 32px 0 rgba(4, 33, 66, 0.85), inset 0 0 20px rgba(61, 224, 252, 0.15);
+            --accent: #3DEOFC;
+            --accent-hover: #2475AC;
+            --text-main: #ffffff;
+            --text-secondary: #E977F5;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
         }
 
         body {
             font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-color);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
-        }
-
-        .cat-icon-btn {
-            background: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            cursor: pointer;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            user-select: none;
+            overflow-x: hidden;
         }
 
-        .cat-icon-btn:hover {
-            border-color: var(--accent);
-            transform: scale(1.1) rotate(6deg);
+        /* INTRO SCREEN */
+        .intro-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: var(--bg-gradient);
+            backdrop-filter: blur(24px);
+            z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 20px;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .intro-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .pixel-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 2.5rem; line-height: 1.5; color: var(--text-main);
+            text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+            margin-bottom: 30px; letter-spacing: 2px;
+        }
+        .pixel-title span { color: var(--accent); }
+
+        .pixel-start-btn {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 1.1rem; color: var(--text-secondary); background: none; border: none;
+            cursor: pointer; letter-spacing: 3px; padding: 15px 30px; border-radius: 12px;
+            transition: all 0.3s ease; animation: pulse-glow 2s infinite;
+        }
+        .pixel-start-btn:hover { color: var(--text-main); text-shadow: 0 0 15px var(--text-main); transform: scale(1.08); }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; text-shadow: 0 0 20px var(--accent); }
+            100% { opacity: 0.4; }
         }
 
-        .cat-icon-btn:active {
-            transform: scale(0.95);
+        /* APP CONTAINER */
+        .app-container { display: flex; width: 100%; min-height: 100vh; opacity: 0; transition: opacity 0.8s ease; }
+        .app-container.visible { opacity: 1; }
+
+        /* SIDEBAR */
+        .app-sidebar {
+            width: var(--sidebar-width); height: 100vh; position: fixed; top: 0; left: 0;
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-right: 2px solid var(--glass-border); padding: 25px 20px;
+            display: flex; flex-direction: column; justify-content: space-between; z-index: 100;
+            box-shadow: var(--glass-shadow); overflow: visible;
         }
 
-        .theme-picker-wrapper {
-            position: relative;
-            display: inline-block;
+        .sidebar-brand {
+            display: flex; align-items: center; gap: 12px; font-size: 1.3rem; font-weight: 800;
+            letter-spacing: -0.5px; margin-bottom: 25px; color: var(--text-main);
         }
+        .sidebar-brand span { color: var(--accent); filter: drop-shadow(0 0 8px var(--accent)); }
 
-        .theme-toggle-btn {
-            background: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        .sidebar-menu { display: flex; flex-direction: column; gap: 12px; flex-grow: 1; position: relative; }
+
+        .sidebar-group-title {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 16px; border-radius: 14px; color: var(--text-main); cursor: pointer;
+            font-weight: 700; font-size: 1rem; border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--glass-bg); position: relative;
         }
+        .sidebar-group-title:hover { background: var(--glass-bg-hover); border-color: var(--glass-border); }
+        .sidebar-group-title.active { border-color: var(--accent); box-shadow: 0 0 15px var(--glass-border); }
 
-        .theme-toggle-btn:hover {
-            border-color: var(--accent);
-            transform: scale(1.05);
-        }
-
-        .theme-menu {
+        /* FLOATING ARC MENU (ANIMATION RA VÀO LẦN LƯỢT TỪ TRÊN XUỐNG) */
+        .floating-sub-menu {
             position: absolute;
-            top: 50px;
-            right: 0;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 10px;
-            width: 220px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            z-index: 200;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.2s ease;
+            left: calc(var(--sidebar-width) - 10px);
+            top: -15px;
+            width: 90px;
+            height: 260px;
+            pointer-events: none;
+            z-index: 300;
         }
 
-        .theme-menu.active {
+        .floating-item {
+            position: absolute;
+            width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--text-main); cursor: pointer; font-size: 1.2rem; border: 2px solid var(--glass-border);
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur);
+            box-shadow: var(--glass-shadow);
+            
+            /* Trạng thái ẨN ban đầu: nằm thụt về sau sidebar */
+            opacity: 0; 
+            visibility: hidden;
+            pointer-events: none;
+            transform: translate(-30px, 0px) scale(0.6);
+            
+            /* Transition hiệu ứng di chuyển mượt mà */
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                        opacity 0.3s ease, 
+                        visibility 0.3s ease,
+                        background 0.3s ease, 
+                        border-color 0.3s ease;
+        }
+
+        /* --- THỜI GIAN DELAY KHI TẮT MENU (Thu vào từ trên xuống) --- */
+        .item-cinema { transition-delay: 0.00s; }
+        .item-music   { transition-delay: 0.05s; }
+        .item-books   { transition-delay: 0.10s; }
+        .item-gaming  { transition-delay: 0.15s; }
+        .item-sports  { transition-delay: 0.20s; }
+
+        /* --- KHỦI MỞ MENU (Bung ra lần lượt từ trên xuống) --- */
+        .floating-sub-menu.active .floating-item {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            pointer-events: auto;
         }
+
+        .floating-sub-menu.active .item-cinema { transform: translate(10px, 0px) scale(1); transition-delay: 0.05s; }
+        .floating-sub-menu.active .item-music   { transform: translate(25px, 52px) scale(1); transition-delay: 0.10s; }
+        .floating-sub-menu.active .item-books   { transform: translate(32px, 108px) scale(1); transition-delay: 0.15s; }
+        .floating-sub-menu.active .item-gaming  { transform: translate(25px, 164px) scale(1); transition-delay: 0.20s; }
+        .floating-sub-menu.active .item-sports  { transform: translate(10px, 216px) scale(1); transition-delay: 0.25s; }
+
+        /* Hover cố định vị trí, chỉ đổi ánh sáng nhẹ */
+        .floating-item:hover {
+            background: var(--glass-bg-hover);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+        }
+        .floating-item.active {
+            background: var(--accent);
+            color: #ffffff;
+            border-color: #ffffff;
+            box-shadow: 0 0 20px var(--accent);
+        }
+        .floating-item.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .floating-item.disabled:hover { box-shadow: none; border-color: var(--glass-border); background: var(--glass-bg); }
+
+        .sidebar-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            padding-top: 20px; border-top: 2px solid var(--glass-border); position: relative; z-index: 10;
+        }
+
+        .cat-icon-btn, .theme-toggle-btn {
+            background: var(--glass-bg); border: 2px solid var(--glass-border); color: var(--text-main);
+            width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem; backdrop-filter: var(--glass-blur);
+        }
+        .cat-icon-btn:hover, .theme-toggle-btn:hover { background: var(--glass-bg-hover); transform: scale(1.08); border-color: var(--accent); box-shadow: 0 0 15px var(--accent); }
+
+        .theme-picker-wrapper { position: relative; }
+        .theme-menu {
+            position: absolute; bottom: 55px; left: 0;
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 2px solid var(--glass-border); border-radius: 16px; padding: 10px; width: 200px;
+            display: flex; flex-direction: column; gap: 6px; box-shadow: var(--glass-shadow);
+            z-index: 500; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.2s ease;
+        }
+        .theme-menu.active { opacity: 1; visibility: visible; transform: translateY(0); }
 
         .theme-option-btn {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: none;
-            border: 1px solid transparent;
-            color: var(--text-main);
-            padding: 10px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            text-align: left;
-            width: 100%;
+            display: flex; align-items: center; gap: 10px; background: none; border: 1px solid transparent;
+            color: var(--text-main); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 500; width: 100%;
         }
+        .theme-option-btn:hover { background: var(--glass-bg-hover); border-color: var(--glass-border); }
+        .theme-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; border: 1px solid var(--text-main); }
 
-        .theme-option-btn:hover {
-            background: var(--meta-bg);
-            border-color: var(--border-color);
+        /* MAIN CONTENT AREA */
+        .app-main { margin-left: var(--sidebar-width); flex-grow: 1; padding: 30px 40px; min-height: 100vh; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .top-navbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+
+        .page-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; color: var(--text-main); }
+
+        .btn-primary {
+            background: var(--accent); color: #ffffff; border: 2px solid #ffffff; padding: 12px 24px;
+            font-size: 0.95rem; font-weight: 700; border-radius: 14px; cursor: pointer; box-shadow: 0 4px 20px var(--accent);
         }
+        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 0 25px var(--accent); }
 
-        .theme-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            display: inline-block;
-            border: 1px solid rgba(255,255,255,0.2);
+        /* UPDATE BANNER */
+        .update-banner {
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 2px solid var(--accent); border-radius: 16px; padding: 15px 20px; margin-bottom: 25px;
+            display: flex; align-items: center; justify-content: space-between; box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+            animation: fadeInBanner 0.5s ease;
         }
+        .update-banner.hidden { display: none; }
+        .update-content { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; color: var(--text-main); }
+        .update-badge { background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 8px; text-transform: uppercase; }
+        .update-close { background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 4px; }
+        .update-close:hover { color: var(--text-main); }
 
-        /* ---------------- GIAO DIỆN MENU CHÍNH ---------------- */
-        #mainMenuScreen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .menu-top-left {
-            position: absolute;
-            top: 25px;
-            left: 30px;
-        }
-
-        .menu-top-bar {
-            position: absolute;
-            top: 25px;
-            right: 30px;
-        }
-
-        .menu-header h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            letter-spacing: -1.5px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .menu-header h1 span { color: var(--accent); }
-
-        .menu-header p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin-bottom: 50px;
-        }
-
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px;
-            width: 100%;
-            max-width: 900px;
-        }
-
-        .menu-card {
-            background-color: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            padding: 40px 20px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        .menu-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: var(--accent);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-
-        .menu-card .icon { font-size: 3rem; transition: transform 0.3s ease; }
-        .menu-card:hover .icon { transform: scale(1.2); }
-        .menu-card h3 { font-size: 1.5rem; font-weight: 700; }
-        .menu-card p { font-size: 0.85rem; color: var(--text-secondary); }
-
-        .menu-card.disabled { opacity: 0.4; cursor: not-allowed; }
-        .menu-card.disabled:hover { transform: none; border-color: var(--border-color); box-shadow: none; }
-
-        .badge-coming-soon {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--border-color);
-            color: var(--text-secondary);
-            font-size: 0.7rem;
-            padding: 4px 8px;
-            border-radius: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        /* ---------------- GIAO DIỆN PHIM ---------------- */
-        #cinemaScreen {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-            padding-bottom: 60px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes fadeInBanner {
+            from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--bg-color);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-left { display: flex; align-items: center; gap: 15px; }
-
-        .back-btn {
-            background: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .back-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-
-        .logo { font-size: 1.6rem; font-weight: 700; letter-spacing: -1px; }
-        .logo span { color: var(--accent); }
-
-        .nav-actions { display: flex; align-items: center; gap: 15px; }
-
-        .btn-primary {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .btn-primary:hover { background-color: var(--accent-hover); transform: translateY(-1px); }
-
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-
-        .controls-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
+        .controls-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 15px; flex-wrap: wrap; }
 
         .search-box input {
-            padding: 12px 16px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.95rem;
-            min-width: 300px;
+            padding: 12px 20px; border-radius: 14px; border: 2px solid var(--glass-border);
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); color: var(--text-main);
+            font-family: 'Outfit', sans-serif; font-size: 0.95rem; min-width: 320px;
         }
-        .search-box input:focus { outline: none; border-color: var(--accent); }
+        .search-box input::placeholder { color: var(--text-secondary); }
+        .search-box input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 15px var(--accent); }
 
-        .filter-toggle-btn {
-            background: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .filter-toggle-btn:hover { border-color: var(--accent); }
-
-        .filter-dropdown {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            display: none;
-        }
-        .filter-dropdown.active { display: block; }
-
-        .filter-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .filter-group { display: flex; flex-direction: column; gap: 6px; }
-        .filter-group label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
-        .filter-group select {
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem;
-        }
-        .filter-group select:focus { outline: none; border-color: var(--accent); }
-
-        .filter-actions { display: flex; justify-content: flex-end; border-top: 1px solid var(--border-color); padding-top: 15px; }
-        .btn-reset { background: var(--border-color); color: var(--text-main); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
-
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-        }
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
 
         .movie-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-            position: relative;
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 2px solid var(--glass-border); border-radius: 20px; overflow: hidden;
+            box-shadow: var(--glass-shadow); display: flex; flex-direction: column; position: relative;
         }
-        .movie-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+        .movie-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 0 25px var(--accent); }
 
-        .poster-container {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            background-color: #000;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        .movie-poster { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .poster-container:hover .movie-poster { transform: scale(1.05); }
-
+        .poster-container { position: relative; width: 100%; height: 220px; overflow: hidden; cursor: zoom-in; }
+        .movie-poster { width: 100%; height: 100%; object-fit: cover; }
+        
         .score-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--badge-bg);
-            backdrop-filter: blur(8px);
-            color: #fbbf24;
-            border: 1px solid rgba(251, 191, 36, 0.3);
-            font-weight: 700;
-            font-size: 0.95rem;
-            padding: 5px 10px;
-            border-radius: 20px;
-            z-index: 5;
-            pointer-events: none;
+            position: absolute; top: 12px; right: 12px; background: rgba(4, 33, 66, 0.75);
+            backdrop-filter: blur(8px); color: #fbbf24; border: 2px solid var(--glass-border);
+            font-weight: 700; font-size: 0.9rem; padding: 4px 10px; border-radius: 16px;
         }
 
-        .movie-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; cursor: pointer; }
-        .movie-title { margin: 0 0 8px 0; font-size: 1.25rem; font-weight: 600; }
-        .movie-meta { font-size: 0.85rem; color: var(--text-secondary); display: flex; gap: 8px; flex-wrap: wrap; }
-        .movie-meta span { background: var(--meta-bg); padding: 4px 10px; border-radius: 6px; }
+        .movie-info { padding: 18px; flex-grow: 1; cursor: pointer; }
+        .movie-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
+        .movie-meta { font-size: 0.8rem; color: var(--text-secondary); display: flex; gap: 6px; flex-wrap: wrap; }
+        .movie-meta span { background: var(--glass-bg-hover); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--glass-border); color: var(--text-main); }
 
         .card-actions { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; opacity: 0; transition: opacity 0.2s; z-index: 10; }
         .movie-card:hover .card-actions { opacity: 1; }
-
         .action-btn {
-            background: rgba(0, 0, 0, 0.75);
-            border: none;
-            color: #fff;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
+            background: rgba(4, 33, 66, 0.85); backdrop-filter: blur(4px); border: 1px solid var(--glass-border); 
+            color: var(--text-main); width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
         .action-btn.edit:hover { background: #3b82f6; }
         .action-btn.delete:hover { background: #ef4444; }
 
-        .empty-state { grid-column: 1 / -1; text-align: center; padding: 80px 20px; color: var(--text-secondary); font-size: 1.1rem; }
+        /* LIGHTBOX FULLSCREEN IMAGE */
+        .lightbox-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(16px); display: flex; justify-content: center; align-items: center;
+            z-index: 4000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        .lightbox-overlay.active { opacity: 1; visibility: visible; }
+        .lightbox-img { max-width: 90vw; max-height: 90vh; border-radius: 16px; border: 2px solid var(--glass-border); box-shadow: 0 0 40px rgba(0,0,0,0.8); object-fit: contain; }
+        .lightbox-close {
+            position: absolute; top: 25px; right: 30px; background: var(--glass-bg); border: 2px solid var(--glass-border);
+            color: #ffffff; width: 45px; height: 45px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
 
+        .glass-panel {
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 2px solid var(--glass-border); border-radius: 24px; padding: 40px; box-shadow: var(--glass-shadow);
+        }
+
+        .coming-soon-wrapper { text-align: center; padding: 60px 20px; }
+        .coming-soon-title { font-size: 3rem; font-weight: 800; letter-spacing: -1px; color: var(--accent); text-shadow: 0 0 20px var(--accent); margin-bottom: 15px; }
+
+        .credits-list { display: flex; flex-direction: column; gap: 20px; margin-top: 15px; }
+        .credits-item { background: var(--glass-bg-hover); border: 1px solid var(--glass-border); padding: 18px 24px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .credits-label { font-weight: 700; color: var(--text-secondary); font-size: 0.95rem; text-transform: uppercase; }
+        .credits-value { font-weight: 700; font-size: 1.1rem; color: var(--text-main); }
+
+        /* MODALS */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            display: flex; justify-content: center; align-items: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 33, 66, 0.75);
+            backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center;
             z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-
         .modal-content {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            width: 100%; max-width: 650px;
-            border-radius: 16px; padding: 30px; position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            transform: translateY(20px); transition: transform 0.3s ease;
-            max-height: 90vh; overflow-y: auto;
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border: 2px solid var(--glass-border); width: 90%; max-width: 600px;
+            border-radius: 24px; padding: 30px; position: relative; box-shadow: var(--glass-shadow);
         }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-
-        .close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer; z-index: 10; }
-        .close-btn:hover { color: var(--text-main); }
-
-        .detail-body { display: flex; flex-direction: column; gap: 20px; }
-        .detail-poster { width: 100%; max-height: 380px; object-fit: contain; background-color: #000; border-radius: 12px; cursor: zoom-in; }
-        .detail-info { display: flex; flex-direction: column; gap: 12px; }
-        .detail-info h2 { font-size: 1.8rem; font-weight: 700; }
-        .detail-score { color: #fbbf24; font-size: 1.4rem; font-weight: 700; }
-
-        .lightbox-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95); display: flex; justify-content: center; align-items: center;
-            z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s ease; cursor: zoom-out;
-        }
-        .lightbox-overlay.active { opacity: 1; visibility: visible; }
-        .lightbox-img { max-width: 95vw; max-height: 95vh; object-fit: contain; border-radius: 8px; }
-
+        .close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-main); font-size: 1.4rem; cursor: pointer; }
+        
         .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px; }
         .form-group { display: flex; flex-direction: column; }
         .form-group.full-width { grid-column: 1 / -1; }
-
-        label { margin-bottom: 6px; font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; }
+        label { margin-bottom: 6px; font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; }
         input {
-            padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color);
-            background-color: var(--bg-color); color: var(--text-main); font-size: 0.9rem; font-family: 'Outfit', sans-serif;
+            padding: 10px 14px; border-radius: 10px; border: 2px solid var(--glass-border);
+            background: var(--glass-bg); color: var(--text-main); font-size: 0.9rem; font-family: 'Outfit', sans-serif;
         }
-        input:focus { outline: none; border-color: var(--accent); }
-
-        .range-wrapper { display: flex; align-items: center; gap: 10px; }
-        input[type="range"] { flex-grow: 1; accent-color: var(--accent); cursor: pointer; }
-
+        input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
         button.submit-btn {
-            background-color: var(--accent); color: white; border: none; padding: 12px;
-            font-size: 1rem; font-weight: 600; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px;
+            background: var(--accent); color: #ffffff; border: 2px solid #ffffff; padding: 12px;
+            font-size: 1rem; font-weight: 700; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 10px;
         }
-        button.submit-btn:hover { background-color: var(--accent-hover); }
 
         .badge-popup-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 3000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 33, 66, 0.85); backdrop-filter: blur(16px);
+            display: flex; justify-content: center; align-items: center; z-index: 3000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
         .badge-popup-overlay.active { opacity: 1; visibility: visible; }
-
-        .badge-card {
-            background: var(--card-bg);
-            border: 2px solid var(--accent);
-            border-radius: 24px;
-            padding: 40px 30px;
-            text-align: center;
-            max-width: 420px;
-            width: 90%;
-            box-shadow: 0 0 50px rgba(139, 92, 246, 0.4);
-            transform: scale(0.8);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .badge-popup-overlay.active .badge-card { transform: scale(1); }
-
-        .badge-icon { font-size: 4rem; margin-bottom: 15px; animation: bounce 1s infinite alternate; }
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
-
-        .badge-title {
-            font-size: 1.8rem; font-weight: 800; color: #fbbf24; margin-bottom: 10px;
-            letter-spacing: -0.5px;
-        }
-        .badge-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 25px; line-height: 1.5; }
-
-        .badge-close-btn {
-            background: var(--accent); color: white; border: none; padding: 12px 30px;
-            font-size: 1rem; font-weight: 700; border-radius: 12px; cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .badge-close-btn:hover { background-color: var(--accent-hover); transform: scale(1.05); }
+        .badge-card { background: var(--glass-bg); border: 2px solid var(--accent); border-radius: 24px; padding: 40px; text-align: center; max-width: 400px; box-shadow: var(--glass-shadow); }
     </style>
 </head>
 <body>
 
-    <!-- MENU CHÍNH -->
-    <div id="mainMenuScreen">
-        <div class="menu-top-left">
-            <button class="cat-icon-btn" id="catBtn1" title="Meow! Click me!">🐈</button>
-        </div>
-
-        <div class="menu-top-bar">
-            <div class="theme-picker-wrapper">
-                <button class="theme-toggle-btn" id="themeBtn1" title="Customize Theme">🎨</button>
-                <div class="theme-menu" id="themeMenu1">
-                    <button class="theme-option-btn" onclick="selectTheme('dark')">
-                        <span class="theme-dot" style="background: #0f1016;"></span> Classic Dark
-                    </button>
-                    <button class="theme-option-btn" onclick="selectTheme('light')">
-                        <span class="theme-dot" style="background: #f8fafc;"></span> Minimal White
-                    </button>
-                    <button class="theme-option-btn" onclick="selectTheme('violet')">
-                        <span class="theme-dot" style="background: #d946ef;"></span> Electric Violet
-                    </button>
-                    <button class="theme-option-btn" onclick="selectTheme('mint')">
-                        <span class="theme-dot" style="background: #10b981;"></span> Mint Fresh
-                    </button>
-                    <button class="theme-option-btn" onclick="selectTheme('amber')">
-                        <span class="theme-dot" style="background: #f59e0b;"></span> Warm Amber
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="menu-header">
-            <h1>Pow's <span>Playground</span></h1>
-            <p>Select a category to start exploring</p>
-        </div>
-
-        <div class="menu-grid">
-            <div class="menu-card" id="btnGoCinema">
-                <div class="icon">🎬</div>
-                <h3>Cinema</h3>
-                <p>Track and store your watched movie collection</p>
-            </div>
-            <div class="menu-card disabled">
-                <span class="badge-coming-soon">Soon</span>
-                <div class="icon">🎵</div>
-                <h3>Music</h3>
-                <p>Rate your favorite albums and tracks</p>
-            </div>
-            <div class="menu-card disabled">
-                <span class="badge-coming-soon">Soon</span>
-                <div class="icon">📚</div>
-                <h3>Books</h3>
-                <p>Note your thoughts on books read</p>
-            </div>
-            <div class="menu-card disabled">
-                <span class="badge-coming-soon">Soon</span>
-                <div class="icon">🎮</div>
-                <h3>Gaming</h3>
-                <p>Log your gaming experiences</p>
-            </div>
-        </div>
+    <!-- INTRO SPLASH SCREEN -->
+    <div class="intro-screen" id="introScreen">
+        <h1 class="pixel-title">Pow's<br><span>Playground</span></h1>
+        <button class="pixel-start-btn" id="startBtn">[ START ]</button>
     </div>
 
-    <!-- GIAO DIỆN ĐIỆN ẢNH -->
-    <div id="cinemaScreen">
-        <nav>
-            <div class="nav-left">
-                <button class="cat-icon-btn" id="catBtn2" title="Meow! Click me!">🐈</button>
-                <button class="back-btn" id="btnBackMenu">❮ Main Menu</button>
-                <div class="logo">Pow's <span>Playground</span></div>
+    <!-- MAIN APP CONTAINER -->
+    <div class="app-container" id="appContainer">
+        <!-- SIDEBAR -->
+        <aside class="app-sidebar">
+            <div>
+                <div class="sidebar-brand">
+                    <span>Pow's</span> Hub
+                </div>
+                <nav class="sidebar-menu">
+                    
+                    <!-- PLAYGROUND -->
+                    <div class="sidebar-group-title active" id="groupPlayground">
+                        <span>🎮 Playground</span>
+                        <span style="font-size: 0.8rem;">▶</span>
+                    </div>
+
+                    <!-- FLOATING ARC MENU (STAGGERED ANIMATION RA VÀO LẦN LƯỢT) -->
+                    <div class="floating-sub-menu" id="floatingPlayground">
+                        <div class="floating-item active item-cinema" id="navCinema" title="Cinema" onclick="switchSubTab('tabCinema', this)">
+                            <span>🎬</span>
+                        </div>
+                        <div class="floating-item disabled item-music" title="Music (Coming Soon)">
+                            <span>🎵</span>
+                        </div>
+                        <div class="floating-item disabled item-books" title="Books (Coming Soon)">
+                            <span>📚</span>
+                        </div>
+                        <div class="floating-item disabled item-gaming" title="Gaming (Coming Soon)">
+                            <span>🎮</span>
+                        </div>
+                        <div class="floating-item disabled item-sports" title="Sports (Coming Soon)">
+                            <span>⚽</span>
+                        </div>
+                    </div>
+
+                    <!-- CHATGROUND -->
+                    <div class="sidebar-group-title" id="groupChatground" onclick="switchTab('tabChatground')">
+                        <span>💬 Chatground</span>
+                    </div>
+
+                    <!-- CREDITS -->
+                    <div class="sidebar-group-title" id="groupCredits" onclick="switchTab('tabCredits')">
+                        <span>📜 Credits</span>
+                    </div>
+
+                </nav>
             </div>
-            <div class="nav-actions">
+
+            <div class="sidebar-footer">
+                <button class="cat-icon-btn" id="catBtn" title="Meow! Click me!">🐈</button>
                 <div class="theme-picker-wrapper">
-                    <button class="theme-toggle-btn" id="themeBtn2" title="Customize Theme">🎨</button>
-                    <div class="theme-menu" id="themeMenu2">
+                    <button class="theme-toggle-btn" id="themeBtn" title="Customize Theme">🎨</button>
+                    <div class="theme-menu" id="themeMenu">
                         <button class="theme-option-btn" onclick="selectTheme('dark')">
-                            <span class="theme-dot" style="background: #0f1016;"></span> Classic Dark
+                            <span class="theme-dot" style="background: #12141c;"></span> Dark Glass
                         </button>
                         <button class="theme-option-btn" onclick="selectTheme('light')">
-                            <span class="theme-dot" style="background: #f8fafc;"></span> Minimal White
-                        </button>
-                        <button class="theme-option-btn" onclick="selectTheme('violet')">
-                            <span class="theme-dot" style="background: #d946ef;"></span> Electric Violet
+                            <span class="theme-dot" style="background: #ffffff;"></span> Light Glass
                         </button>
                         <button class="theme-option-btn" onclick="selectTheme('mint')">
-                            <span class="theme-dot" style="background: #10b981;"></span> Mint Fresh
+                            <span class="theme-dot" style="background: #059669;"></span> Emerald Glass
                         </button>
                         <button class="theme-option-btn" onclick="selectTheme('amber')">
-                            <span class="theme-dot" style="background: #f59e0b;"></span> Warm Amber
+                            <span class="theme-dot" style="background: #d97706;"></span> Sunset Glass
+                        </button>
+                        <button class="theme-option-btn" onclick="selectTheme('violet')">
+                            <span class="theme-dot" style="background: #3DEOFC;"></span> Aurora Glass
                         </button>
                     </div>
                 </div>
-                <button class="btn-primary" id="openAddModalBtn">+ Add Movie</button>
             </div>
-        </nav>
+        </aside>
 
-        <div class="container">
-            <div class="controls-bar">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="🔍 Search by movie title, director...">
+        <!-- MAIN CONTENT AREA -->
+        <main class="app-main">
+
+            <!-- TAB 1: CINEMA REVIEWS -->
+            <section class="tab-content active" id="tabCinema">
+                <header class="top-navbar">
+                    <h1 class="page-title">Cinema Reviews</h1>
+                    <button class="btn-primary" id="openAddModalBtn">+ Add Movie</button>
+                </header>
+
+                <!-- UPDATE BANNER -->
+                <div class="update-banner" id="updateBanner">
+                    <div class="update-content">
+                        <span class="update-badge">New Update!</span>
+                        <span>✨ Thêm mục thể thao + nâng cấp giao diện: <b>Liquid glass, 3 loại background và Arc Menu!</b> </span>
+                    </div>
+                    <button class="update-close" id="closeUpdateBanner" title="Đóng thông báo">✕</button>
                 </div>
-                <button class="filter-toggle-btn" id="filterToggleBtn">⚙️ Filter & Sort</button>
-            </div>
 
-            <div class="filter-dropdown" id="filterDropdown">
-                <div class="filter-grid">
-                    <div class="filter-group">
-                        <label for="decadeFilter">Decade</label>
-                        <select id="decadeFilter"><option value="">All Decades</option></select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="directorFilter">Director</label>
-                        <select id="directorFilter"><option value="">All Directors</option></select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="countryFilter">Country</label>
-                        <select id="countryFilter"><option value="">All Countries</option></select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="sortSelect">Sort By</label>
-                        <select id="sortSelect">
-                            <option value="newest">Newest</option>
-                            <option value="score-desc">Score: High to Low</option>
-                            <option value="score-asc">Score: Low to High</option>
-                        </select>
+                <div class="controls-bar">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="🔍 Search movie title, director...">
                     </div>
                 </div>
-                <div class="filter-actions">
-                    <button class="btn-reset" id="resetFiltersBtn">Reset All</button>
+
+                <div class="reviews-grid" id="reviewsGrid"></div>
+            </section>
+
+            <!-- TAB 2: CHATGROUND -->
+            <section class="tab-content" id="tabChatground">
+                <header class="top-navbar">
+                    <h1 class="page-title">Chatground</h1>
+                </header>
+                <div class="glass-panel">
+                    <div class="coming-soon-wrapper">
+                        <div class="coming-soon-title">Coming soon...</div>
+                        <p style="color: var(--text-secondary); font-size: 1.1rem;">Tính năng trò chuyện đang trong quá trình xây dựng.</p>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="reviews-grid" id="reviewsGrid"></div>
-        </div>
-
-        <div class="modal-overlay" id="formModalOverlay">
-            <div class="modal-content">
-                <button class="close-btn" id="closeFormModalBtn">✕</button>
-                <h2 id="formModalTitle" style="margin-bottom: 20px; font-weight: 600;">✨ Add New Movie</h2>
-                
-                <form id="reviewForm">
-                    <input type="hidden" id="editIndex" value="-1">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="title">Movie Title</label>
-                            <input type="text" id="title" required placeholder="e.g. Interstellar">
+            <!-- TAB 3: CREDITS -->
+            <section class="tab-content" id="tabCredits">
+                <header class="top-navbar">
+                    <h1 class="page-title">Credits</h1>
+                </header>
+                <div class="glass-panel">
+                    <h2 style="margin-bottom: 25px; color: var(--text-main);">✨ Project Contributions</h2>
+                    <div class="credits-list">
+                        <div class="credits-item">
+                            <span class="credits-label">Dev</span>
+                            <span class="credits-value">Pows, Atus, HuyDoan</span>
                         </div>
-                        <div class="form-group">
-                            <label for="director">Director</label>
-                            <input type="text" id="director" required placeholder="e.g. Christopher Nolan">
+                        <div class="credits-item">
+                            <span class="credits-label">Giao diện, customs</span>
+                            <span class="credits-value">Gemn, Pows</span>
                         </div>
-                        <div class="form-group">
-                            <label for="year">Release Year</label>
-                            <input type="number" id="year" required min="1888" max="2099" placeholder="2014">
-                        </div>
-                        <div class="form-group">
-                            <label for="country">Country</label>
-                            <input type="text" id="country" required placeholder="USA, UK...">
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="score">Score (0.0 - 100.0)</label>
-                            <div class="range-wrapper">
-                                <input type="range" id="scoreRange" min="0" max="100" step="0.1" value="85.0">
-                                <input type="number" id="score" min="0" max="100" step="0.1" value="85.0" required style="width: 80px; text-align: center;">
-                            </div>
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="image">Poster Image (Upload file)</label>
-                            <input type="file" id="image" accept="image/*">
-                            <small style="color: var(--text-secondary); margin-top: 4px;" id="imageHelp">*(Required for new movies)</small>
+                        <div class="credits-item">
+                            <span class="credits-label">Versions</span>
+                            <span class="credits-value">Beta 1.5</span>
                         </div>
                     </div>
-                    <button type="submit" class="submit-btn" id="formSubmitBtn">Save Movie</button>
-                </form>
-            </div>
-        </div>
+                </div>
+            </section>
 
-        <div class="modal-overlay" id="detailModalOverlay">
-            <div class="modal-content" style="max-width: 650px;">
-                <button class="close-btn" id="closeDetailModalBtn">✕</button>
-                <div class="detail-body" id="detailContent"></div>
-            </div>
-        </div>
+        </main>
+    </div>
 
-        <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
-            <img src="" alt="Full Poster" class="lightbox-img" id="lightboxImg">
+    <!-- MODAL FORM (ADD & EDIT) -->
+    <div class="modal-overlay" id="formModalOverlay">
+        <div class="modal-content">
+            <button class="close-btn" id="closeFormModalBtn">✕</button>
+            <h2 id="formModalTitle" style="margin-bottom: 20px; color: var(--text-main);">✨ Add New Movie</h2>
+            <form id="reviewForm">
+                <input type="hidden" id="editIndex" value="-1">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" required placeholder="Interstellar">
+                    </div>
+                    <div class="form-group">
+                        <label for="director">Director</label>
+                        <input type="text" id="director" required placeholder="Christopher Nolan">
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year</label>
+                        <input type="number" id="year" required placeholder="2014">
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" id="country" required placeholder="USA">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="score">Score (0.0 - 100.0)</label>
+                        <input type="number" id="score" min="0" max="100" step="0.1" value="85.0" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="image">Poster Image</label>
+                        <input type="file" id="image" accept="image/*">
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn" id="formSubmitBtn">Save Movie</button>
+            </form>
         </div>
     </div>
 
+    <!-- LIGHTBOX FULLSCREEN IMAGE PREVIEW -->
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <button class="lightbox-close" id="lightboxClose">✕</button>
+        <img src="" alt="Fullscreen Poster" class="lightbox-img" id="lightboxImg">
+    </div>
+
+    <!-- EASTER EGG BADGE POPUP -->
     <div class="badge-popup-overlay" id="badgePopupOverlay">
         <div class="badge-card">
-            <div class="badge-icon">👑🐈✨</div>
-            <div class="badge-title">ACHIEVEMENT UNLOCKED!</div>
-            <p class="badge-desc">Congratulations on earning the exclusive title:<br><strong style="color: var(--accent); font-size: 1.2rem;">"Cats Lover"</strong></p>
-            <button class="badge-close-btn" onclick="closeBadgePopup()">Awesome!</button>
+            <div style="font-size: 3.5rem; margin-bottom: 15px;">👑🐈✨</div>
+            <h2 style="color: #fbbf24; margin-bottom: 10px;">ACHIEVEMENT UNLOCKED!</h2>
+            <p style="color: var(--text-main); margin-bottom: 20px;">Title: <strong style="color: var(--accent);">"Cats Lover"</strong></p>
+            <button class="btn-primary" onclick="closeBadgePopup()">Awesome!</button>
         </div>
     </div>
 
-<!-- FIREBASE REALTIME BACKEND SCRIPT -->
+<!-- FIREBASE SCRIPT -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // CẤU HÌNH ĐÃ ĐƯỢC ĐIỀN CHUẨN TỪ FIREBASE CỦA BẠN
     const firebaseConfig = {
         apiKey: "AIzaSyBsDwP9rsWMuGnRxKk53_AmtCn-0Heq-F0",
         authDomain: "pows-playground.firebaseapp.com",
@@ -805,7 +613,64 @@
     let reviews = [];
     let currentImageBase64 = '';
 
-    // WEB AUDIO API
+    // INTRO SCREEN START ACTION
+    const introScreen = document.getElementById('introScreen');
+    const appContainer = document.getElementById('appContainer');
+    document.getElementById('startBtn').addEventListener('click', () => {
+        playClickSound();
+        introScreen.classList.add('hidden');
+        appContainer.classList.add('visible');
+    });
+
+    // UPDATE BANNER LOGIC
+    const updateBanner = document.getElementById('updateBanner');
+    const closeUpdateBanner = document.getElementById('closeUpdateBanner');
+    const CURRENT_UPDATE_ID = 'pow_update_staggered_arc_v1.5'; 
+    if (localStorage.getItem(CURRENT_UPDATE_ID) === 'closed') {
+        updateBanner.classList.add('hidden');
+    }
+
+    closeUpdateBanner.addEventListener('click', () => {
+        updateBanner.classList.add('hidden');
+        localStorage.setItem(CURRENT_UPDATE_ID, 'closed');
+    });
+
+    const groupPlayground = document.getElementById('groupPlayground');
+    const floatingPlayground = document.getElementById('floatingPlayground');
+
+    groupPlayground.addEventListener('click', (e) => {
+        e.stopPropagation();
+        floatingPlayground.classList.toggle('active');
+        switchTab('tabCinema');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!floatingPlayground.contains(e.target) && !groupPlayground.contains(e.target)) {
+            floatingPlayground.classList.remove('active');
+        }
+    });
+
+    window.switchTab = (tabId) => {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.sidebar-group-title').forEach(el => el.classList.remove('active'));
+
+        document.getElementById(tabId).classList.add('active');
+
+        if (tabId === 'tabCinema') {
+            groupPlayground.classList.add('active');
+        } else {
+            floatingPlayground.classList.remove('active');
+            if (tabId === 'tabChatground') document.getElementById('groupChatground').classList.add('active');
+            if (tabId === 'tabCredits') document.getElementById('groupCredits').classList.add('active');
+        }
+    };
+
+    window.switchSubTab = (tabId, element) => {
+        document.querySelectorAll('.floating-item').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+        switchTab(tabId);
+    };
+
     let audioCtx = null;
     function playClickSound() {
         try {
@@ -816,12 +681,10 @@
             osc.type = 'sine';
             osc.frequency.setValueAtTime(800, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.04);
-            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.04);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.04);
         } catch (e) {}
     }
 
@@ -835,133 +698,79 @@
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(450, now);
             osc.frequency.linearRampToValueAtTime(750, now + 0.15);
-            osc.frequency.linearRampToValueAtTime(500, now + 0.35);
-            gain.gain.setValueAtTime(0.001, now);
-            gain.gain.linearRampToValueAtTime(0.12, now + 0.08);
+            gain.gain.setValueAtTime(0.08, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 0.35);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(now); osc.stop(now + 0.35);
         } catch (e) {}
     }
 
     document.addEventListener('click', (e) => {
-        const target = e.target.closest('button, .menu-card, select, .poster-container, .theme-option-btn');
+        const target = e.target.closest('button, .sidebar-group-title, .floating-item:not(.disabled), .pixel-start-btn');
         if (target && !target.classList.contains('cat-icon-btn')) playClickSound();
     });
 
-    // EASTER EGG CATS LOVER
     let catClickCount = parseInt(localStorage.getItem('pow_cat_clicks')) || 0;
     const badgePopupOverlay = document.getElementById('badgePopupOverlay');
-
-    function handleCatClick() {
+    document.getElementById('catBtn').addEventListener('click', () => {
         playMeowSound();
         catClickCount++;
         localStorage.setItem('pow_cat_clicks', catClickCount);
         if (catClickCount === 10 || (catClickCount > 10 && catClickCount % 10 === 0)) {
             badgePopupOverlay.classList.add('active');
         }
-    }
+    });
     window.closeBadgePopup = () => badgePopupOverlay.classList.remove('active');
 
-    document.getElementById('catBtn1').addEventListener('click', handleCatClick);
-    document.getElementById('catBtn2').addEventListener('click', handleCatClick);
-
-    // THEME SWITCHER
-    const themeBtn1 = document.getElementById('themeBtn1');
-    const themeBtn2 = document.getElementById('themeBtn2');
-    const themeMenu1 = document.getElementById('themeMenu1');
-    const themeMenu2 = document.getElementById('themeMenu2');
-
-    themeBtn1.addEventListener('click', (e) => { e.stopPropagation(); themeMenu1.classList.toggle('active'); });
-    themeBtn2.addEventListener('click', (e) => { e.stopPropagation(); themeMenu2.classList.toggle('active'); });
-    document.addEventListener('click', () => {
-        themeMenu1.classList.remove('active');
-        themeMenu2.classList.remove('active');
-    });
+    const themeBtn = document.getElementById('themeBtn');
+    const themeMenu = document.getElementById('themeMenu');
+    themeBtn.addEventListener('click', (e) => { e.stopPropagation(); themeMenu.classList.toggle('active'); });
+    document.addEventListener('click', () => themeMenu.classList.remove('active'));
 
     window.selectTheme = (themeName) => {
         if (themeName === 'dark') document.documentElement.removeAttribute('data-theme');
         else document.documentElement.setAttribute('data-theme', themeName);
         localStorage.setItem('pow_playground_theme_choice', themeName);
-        themeMenu1.classList.remove('active');
-        themeMenu2.classList.remove('active');
+        themeMenu.classList.remove('active');
     };
     selectTheme(localStorage.getItem('pow_playground_theme_choice') || 'dark');
 
-    // ROUTING
-    const mainMenuScreen = document.getElementById('mainMenuScreen');
-    const cinemaScreen = document.getElementById('cinemaScreen');
-    document.getElementById('btnGoCinema').addEventListener('click', () => {
-        mainMenuScreen.style.display = 'none';
-        cinemaScreen.style.display = 'block';
-    });
-    document.getElementById('btnBackMenu').addEventListener('click', () => {
-        cinemaScreen.style.display = 'none';
-        mainMenuScreen.style.display = 'flex';
-    });
-
-    // LẤY DỮ LIỆU ĐỒNG BỘ THỜI GIAN THỰC TỪ FIREBASE
     const q = query(moviesRef, orderBy("timestamp", "desc"));
     onSnapshot(q, (snapshot) => {
         reviews = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         renderReviews();
     });
 
-    // ELEMENTS
     const formModalOverlay = document.getElementById('formModalOverlay');
-    const detailModalOverlay = document.getElementById('detailModalOverlay');
-    const lightboxOverlay = document.getElementById('lightboxOverlay');
-    const lightboxImg = document.getElementById('lightboxImg');
-
     const openAddModalBtn = document.getElementById('openAddModalBtn');
     const closeFormModalBtn = document.getElementById('closeFormModalBtn');
-    const closeDetailModalBtn = document.getElementById('closeDetailModalBtn');
     const form = document.getElementById('reviewForm');
     const reviewsGrid = document.getElementById('reviewsGrid');
-    
-    const filterToggleBtn = document.getElementById('filterToggleBtn');
-    const filterDropdown = document.getElementById('filterDropdown');
-    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
-
     const searchInput = document.getElementById('searchInput');
-    const decadeFilter = document.getElementById('decadeFilter');
-    const directorFilter = document.getElementById('directorFilter');
-    const countryFilter = document.getElementById('countryFilter');
-    const sortSelect = document.getElementById('sortSelect');
 
-    const scoreRange = document.getElementById('scoreRange');
-    const scoreInput = document.getElementById('score');
+    // LIGHTBOX FULLSCREEN LOGIC
+    const lightboxOverlay = document.getElementById('lightboxOverlay');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.getElementById('lightboxClose');
 
-    filterToggleBtn.addEventListener('click', () => filterDropdown.classList.toggle('active'));
-    resetFiltersBtn.addEventListener('click', () => {
-        decadeFilter.value = ""; directorFilter.value = ""; countryFilter.value = ""; sortSelect.value = "newest";
-        renderReviews();
+    window.openLightbox = (imgSrc) => {
+        lightboxImg.src = imgSrc;
+        lightboxOverlay.classList.add('active');
+    };
+    lightboxClose.addEventListener('click', () => lightboxOverlay.classList.remove('active'));
+    lightboxOverlay.addEventListener('click', (e) => {
+        if (e.target === lightboxOverlay) lightboxOverlay.classList.remove('active');
     });
 
     openAddModalBtn.addEventListener('click', () => {
         document.getElementById('formModalTitle').innerText = '✨ Add New Movie';
-        document.getElementById('formSubmitBtn').innerText = 'Save Movie';
         document.getElementById('editIndex').value = '-1';
-        document.getElementById('image').required = true;
-        document.getElementById('imageHelp').style.display = 'inline';
         form.reset();
-        scoreRange.value = 85.0; scoreInput.value = 85.0;
         currentImageBase64 = '';
         formModalOverlay.classList.add('active');
     });
 
     closeFormModalBtn.addEventListener('click', () => formModalOverlay.classList.remove('active'));
-    closeDetailModalBtn.addEventListener('click', () => detailModalOverlay.classList.remove('active'));
-    formModalOverlay.addEventListener('click', (e) => { if (e.target === formModalOverlay) formModalOverlay.classList.remove('active'); });
-    detailModalOverlay.addEventListener('click', (e) => { if (e.target === detailModalOverlay) detailModalOverlay.classList.remove('active'); });
-
-    scoreRange.addEventListener('input', (e) => scoreInput.value = parseFloat(e.target.value).toFixed(1));
-    scoreInput.addEventListener('input', (e) => {
-        let val = parseFloat(e.target.value);
-        if(!isNaN(val)) scoreRange.value = Math.min(Math.max(val, 0), 100);
-    });
 
     document.getElementById('image').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -972,66 +781,23 @@
         }
     });
 
-    function updateFilterOptions() {
-        const currentDecade = decadeFilter.value;
-        const currentDirector = directorFilter.value;
-        const currentCountry = countryFilter.value;
-
-        const decades = new Set();
-        const directors = new Set();
-        const countries = new Set();
-
-        reviews.forEach(item => {
-            if (item.year) decades.add(Math.floor(parseInt(item.year) / 10) * 10);
-            if (item.director) directors.add(item.director.trim());
-            if (item.country) countries.add(item.country.trim());
-        });
-
-        decadeFilter.innerHTML = '<option value="">All Decades</option>';
-        Array.from(decades).sort((a, b) => b - a).forEach(dec => decadeFilter.innerHTML += `<option value="${dec}">${dec}s</option>`);
-        decadeFilter.value = currentDecade;
-
-        directorFilter.innerHTML = '<option value="">All Directors</option>';
-        Array.from(directors).sort().forEach(dir => directorFilter.innerHTML += `<option value="${dir}">${dir}</option>`);
-        directorFilter.value = currentDirector;
-
-        countryFilter.innerHTML = '<option value="">All Countries</option>';
-        Array.from(countries).sort().forEach(c => countryFilter.innerHTML += `<option value="${c}">${c}</option>`);
-        countryFilter.value = currentCountry;
-    }
-
     function renderReviews() {
-        updateFilterOptions();
-
         let filtered = reviews.filter(item => {
             const matchesSearch = item.title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
                                   item.director.toLowerCase().includes(searchInput.value.toLowerCase());
-            const itemDecade = Math.floor(parseInt(item.year) / 10) * 10;
-            const matchesDecade = decadeFilter.value === "" || itemDecade.toString() === decadeFilter.value;
-            const matchesDirector = directorFilter.value === "" || item.director.trim().toLowerCase() === directorFilter.value.toLowerCase();
-            const matchesCountry = countryFilter.value === "" || item.country.trim().toLowerCase() === countryFilter.value.toLowerCase();
-            return matchesSearch && matchesDecade && matchesDirector && matchesCountry;
+            return matchesSearch;
         });
 
-        const sortValue = sortSelect.value;
-        if (sortValue === 'score-desc') filtered.sort((a, b) => b.score - a.score);
-        else if (sortValue === 'score-asc') filtered.sort((a, b) => a.score - b.score);
-
         reviewsGrid.innerHTML = '';
-        if (filtered.length === 0) {
-            reviewsGrid.innerHTML = `<div class="empty-state">No matching movies found.</div>`;
-            return;
-        }
-
         filtered.forEach((item) => {
             const card = document.createElement('div');
             card.className = 'movie-card';
             card.innerHTML = `
-                <div class="poster-container" onclick="showDetail('${item.id}')">
+                <div class="poster-container" onclick="openLightbox('${item.image}')" title="Click to view full image">
                     <img src="${item.image}" alt="${item.title}" class="movie-poster">
                     <div class="score-badge">★ ${parseFloat(item.score).toFixed(1)}</div>
                 </div>
-                <div class="movie-info" onclick="showDetail('${item.id}')">
+                <div class="movie-info" onclick="openLightbox('${item.image}')">
                     <h3 class="movie-title">${item.title}</h3>
                     <div class="movie-meta">
                         <span>${item.year}</span>
@@ -1040,58 +806,30 @@
                     </div>
                 </div>
                 <div class="card-actions">
-                    <button class="action-btn edit" onclick="openEditModal('${item.id}')" title="Edit">✎</button>
-                    <button class="action-btn delete" onclick="deleteReview('${item.id}')" title="Delete">✕</button>
+                    <button class="action-btn edit" onclick="openEditModal('${item.id}')" title="Edit Review">✏️</button>
+                    <button class="action-btn delete" onclick="deleteReview('${item.id}')" title="Delete Review">✕</button>
                 </div>
             `;
             reviewsGrid.appendChild(card);
         });
     }
 
-    window.showDetail = (id) => {
-        const item = reviews.find(r => r.id === id);
-        if (!item) return;
-        document.getElementById('detailContent').innerHTML = `
-            <img src="${item.image}" alt="${item.title}" class="detail-poster" onclick="openLightbox('${item.image}')" title="Click to view full screen">
-            <div class="detail-info">
-                <h2>${item.title}</h2>
-                <div class="detail-score">★ ${parseFloat(item.score).toFixed(1)} / 100 points</div>
-                <p><b>Director:</b> ${item.director}</p>
-                <p><b>Release Year:</b> ${item.year}</p>
-                <p><b>Country:</b> ${item.country}</p>
-            </div>
-        `;
-        detailModalOverlay.classList.add('active');
-    };
-
-    window.openLightbox = (imgSrc) => {
-        lightboxImg.src = imgSrc;
-        lightboxOverlay.classList.add('active');
-    };
-    window.closeLightbox = () => lightboxOverlay.classList.remove('active');
-
     window.openEditModal = (id) => {
         const item = reviews.find(r => r.id === id);
         if (!item) return;
-        document.getElementById('formModalTitle').innerText = '✏️ Edit Movie Details';
-        document.getElementById('formSubmitBtn').innerText = 'Update Movie';
+        document.getElementById('formModalTitle').innerText = '✏️ Edit Movie Review';
         document.getElementById('editIndex').value = id;
-        
         document.getElementById('title').value = item.title;
         document.getElementById('director').value = item.director;
         document.getElementById('year').value = item.year;
         document.getElementById('country').value = item.country;
-        scoreRange.value = item.score;
-        scoreInput.value = item.score;
-        
+        document.getElementById('score').value = item.score;
         currentImageBase64 = item.image;
-        document.getElementById('image').required = false;
-        document.getElementById('imageHelp').style.display = 'none';
         formModalOverlay.classList.add('active');
     };
 
     window.deleteReview = async (id) => {
-        if (confirm('Are you sure you want to delete this movie?')) {
+        if (confirm('Delete this movie?')) {
             await deleteDoc(doc(db, "movies", id));
         }
     };
@@ -1099,15 +837,14 @@
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         const editId = document.getElementById('editIndex').value;
-
         const movieData = {
             title: document.getElementById('title').value,
             director: document.getElementById('director').value,
             year: document.getElementById('year').value,
             country: document.getElementById('country').value,
-            score: parseFloat(scoreInput.value),
+            score: parseFloat(document.getElementById('score').value),
             image: currentImageBase64,
-            timestamp: editId === '-1' ? Date.now() : reviews.find(r => r.id === editId)?.timestamp || Date.now()
+            timestamp: Date.now()
         };
 
         if (editId === '-1') {
@@ -1115,16 +852,10 @@
         } else {
             await updateDoc(doc(db, "movies", editId), movieData);
         }
-
         formModalOverlay.classList.remove('active');
     });
 
     searchInput.addEventListener('input', renderReviews);
-    decadeFilter.addEventListener('change', renderReviews);
-    directorFilter.addEventListener('change', renderReviews);
-    countryFilter.addEventListener('change', renderReviews);
-    sortSelect.addEventListener('change', renderReviews);
 </script>
-
 </body>
 </html>
