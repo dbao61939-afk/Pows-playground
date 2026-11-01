@@ -6,20 +6,76 @@
     <title>Pow's Playground</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* Mặc định: Dark Mode */
         :root {
-            --bg-color: #0b0b0f;
-            --card-bg: #16161f;
-            --accent: #e50914;
-            --accent-hover: #f40612;
-            --text-main: #f3f4f6;
-            --text-secondary: #9ca3af;
-            --border-color: #2a2a3c;
+            --bg-color: #0f1016;
+            --card-bg: #181924;
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #2e3047;
+            --badge-bg: rgba(24, 25, 36, 0.85);
+            --meta-bg: #222433;
+        }
+
+        /* 1. Trắng Tối Giản */
+        [data-theme="light"] {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --text-main: #0f172a;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --badge-bg: rgba(255, 255, 255, 0.9);
+            --meta-bg: #f1f5f9;
+        }
+
+        /* 2. Tím Neon */
+        [data-theme="violet"] {
+            --bg-color: #0d0914;
+            --card-bg: #171024;
+            --accent: #d946ef;
+            --accent-hover: #c026d3;
+            --text-main: #fae8ff;
+            --text-secondary: #a855f7;
+            --border-color: #3b1d54;
+            --badge-bg: rgba(23, 16, 36, 0.85);
+            --meta-bg: #26163b;
+        }
+
+        /* 3. Xanh Mint */
+        [data-theme="mint"] {
+            --bg-color: #0c1412;
+            --card-bg: #14211d;
+            --accent: #10b981;
+            --accent-hover: #059669;
+            --text-main: #ecfdf5;
+            --text-secondary: #6ee7b7;
+            --border-color: #1f3a33;
+            --badge-bg: rgba(20, 33, 29, 0.85);
+            --meta-bg: #1b302a;
+        }
+
+        /* 4. Vàng Hổ Phách */
+        [data-theme="amber"] {
+            --bg-color: #0f0d0a;
+            --card-bg: #1c1813;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --text-main: #fffbeb;
+            --text-secondary: #fcd34d;
+            --border-color: #3b3021;
+            --badge-bg: rgba(28, 24, 19, 0.85);
+            --meta-bg: #292219;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         body {
@@ -27,9 +83,114 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(229, 9, 20, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+        }
+
+        /* Icon Con Mèo ở Góc Trái */
+        .cat-icon-btn {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            user-select: none;
+        }
+
+        .cat-icon-btn:hover {
+            border-color: var(--accent);
+            transform: scale(1.1) rotate(6deg);
+        }
+
+        .cat-icon-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Theme Picker Wrapper & Menu */
+        .theme-picker-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .theme-toggle-btn {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .theme-menu {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 10px;
+            width: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+        }
+
+        .theme-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .theme-option-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: none;
+            border: 1px solid transparent;
+            color: var(--text-main);
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: left;
+            width: 100%;
+        }
+
+        .theme-option-btn:hover {
+            background: var(--meta-bg);
+            border-color: var(--border-color);
+        }
+
+        .theme-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
         /* ---------------- GIAO DIỆN MENU CHÍNH (MAIN MENU) ---------------- */
@@ -41,6 +202,19 @@
             min-height: 100vh;
             padding: 20px;
             text-align: center;
+            position: relative;
+        }
+
+        .menu-top-left {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+        }
+
+        .menu-top-bar {
+            position: absolute;
+            top: 25px;
+            right: 30px;
         }
 
         .menu-header h1 {
@@ -80,52 +254,29 @@
             gap: 15px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .menu-card:hover {
             transform: translateY(-8px) scale(1.02);
             border-color: var(--accent);
-            box-shadow: 0 15px 35px rgba(229, 9, 20, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
 
-        .menu-card .icon {
-            font-size: 3rem;
-            transition: transform 0.3s ease;
-        }
+        .menu-card .icon { font-size: 3rem; transition: transform 0.3s ease; }
+        .menu-card:hover .icon { transform: scale(1.2); }
+        .menu-card h3 { font-size: 1.5rem; font-weight: 700; }
+        .menu-card p { font-size: 0.85rem; color: var(--text-secondary); }
 
-        .menu-card:hover .icon {
-            transform: scale(1.2);
-        }
-
-        .menu-card h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .menu-card p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        /* Mục chưa mở rộng (Disabled state) */
-        .menu-card.disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            border-color: #1a1a24;
-        }
-
-        .menu-card.disabled:hover {
-            transform: none;
-            box-shadow: none;
-            border-color: #1a1a24;
-        }
+        .menu-card.disabled { opacity: 0.4; cursor: not-allowed; }
+        .menu-card.disabled:hover { transform: none; border-color: var(--border-color); box-shadow: none; }
 
         .badge-coming-soon {
             position: absolute;
             top: 12px;
             right: 12px;
-            background: #2a2a3c;
-            color: #aaa;
+            background: var(--border-color);
+            color: var(--text-secondary);
             font-size: 0.7rem;
             padding: 4px 8px;
             border-radius: 10px;
@@ -150,7 +301,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(11, 11, 15, 0.85);
+            background: var(--bg-color);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
             padding: 15px 30px;
@@ -159,14 +310,10 @@
             align-items: center;
         }
 
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+        .nav-left { display: flex; align-items: center; gap: 15px; }
 
         .back-btn {
-            background: #1f1f2e;
+            background: var(--card-bg);
             color: var(--text-main);
             border: 1px solid var(--border-color);
             padding: 8px 16px;
@@ -174,21 +321,13 @@
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 600;
-            transition: all 0.2s ease;
         }
+        .back-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-        .back-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-        }
-
+        .logo { font-size: 1.6rem; font-weight: 700; letter-spacing: -1px; }
         .logo span { color: var(--accent); }
+
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
 
         .btn-primary {
             background-color: var(--accent);
@@ -201,49 +340,84 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
+        .btn-primary:hover { background-color: var(--accent-hover); transform: translateY(-1px); }
 
-        .btn-primary:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
-        }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
 
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        /* Controls: Search & Sort */
         .controls-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            flex-wrap: wrap;
             gap: 15px;
+            flex-wrap: wrap;
         }
 
-        .search-box input, .sort-box select {
-            padding: 10px 16px;
+        .search-box input {
+            padding: 12px 16px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
-            background-color: #12121a;
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            min-width: 300px;
+        }
+        .search-box input:focus { outline: none; border-color: var(--accent); }
+
+        .filter-toggle-btn {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-toggle-btn:hover { border-color: var(--accent); }
+
+        .filter-dropdown {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .filter-dropdown.active { display: block; }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group { display: flex; flex-direction: column; gap: 6px; }
+        .filter-group label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
+        .filter-group select {
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Outfit', sans-serif;
             font-size: 0.9rem;
         }
+        .filter-group select:focus { outline: none; border-color: var(--accent); }
 
-        .search-box input { min-width: 260px; }
-        .search-box input:focus, .sort-box select:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
+        .filter-actions { display: flex; justify-content: flex-end; border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .btn-reset { background: var(--border-color); color: var(--text-main); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
 
         /* Gallery Grid */
         .reviews-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 30px;
         }
 
@@ -252,41 +426,33 @@
             border: 1px solid var(--border-color);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
             position: relative;
         }
-
-        .movie-card:hover {
-            transform: translateY(-6px);
-            border-color: #3a3a4f;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
-        }
+        .movie-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
 
         .poster-container {
             position: relative;
             width: 100%;
-            height: 420px;
-            background-color: #0f0f17;
+            height: 200px;
+            background-color: #000;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
         }
-
-        .movie-poster {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .movie-card:hover .movie-poster { transform: scale(1.03); }
+        .movie-poster { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .poster-container:hover .movie-poster { transform: scale(1.05); }
 
         .score-badge {
             position: absolute;
             top: 12px;
             right: 12px;
-            background: rgba(11, 11, 15, 0.85);
+            background: var(--badge-bg);
             backdrop-filter: blur(8px);
             color: #fbbf24;
             border: 1px solid rgba(251, 191, 36, 0.3);
@@ -294,359 +460,602 @@
             font-size: 0.95rem;
             padding: 5px 10px;
             border-radius: 20px;
+            z-index: 5;
+            pointer-events: none;
         }
 
-        .movie-info {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
+        .movie-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; cursor: pointer; }
+        .movie-title { margin: 0 0 8px 0; font-size: 1.25rem; font-weight: 600; }
+        .movie-meta { font-size: 0.85rem; color: var(--text-secondary); display: flex; gap: 8px; flex-wrap: wrap; }
+        .movie-meta span { background: var(--meta-bg); padding: 4px 10px; border-radius: 6px; }
 
-        .movie-title {
-            margin: 0 0 8px 0;
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
+        .card-actions { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; opacity: 0; transition: opacity 0.2s; z-index: 10; }
+        .movie-card:hover .card-actions { opacity: 1; }
 
-        .movie-meta {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .movie-meta span {
-            background: #20202d;
-            padding: 4px 10px;
-            border-radius: 6px;
-        }
-
-        .delete-btn {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(0, 0, 0, 0.7);
+        .action-btn {
+            background: rgba(0, 0, 0, 0.75);
             border: none;
-            color: #ff4d4d;
-            width: 30px;
-            height: 30px;
+            color: #fff;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            transition: opacity 0.2s;
+            font-size: 0.9rem;
         }
+        .action-btn.edit:hover { background: #3b82f6; }
+        .action-btn.delete:hover { background: #ef4444; }
 
-        .movie-card:hover .delete-btn { opacity: 1; }
-        .delete-btn:hover { background: var(--accent); color: white; }
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 80px 20px; color: var(--text-secondary); font-size: 1.1rem; }
 
-        .empty-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 80px 20px;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        /* Modal Pop-up */
+        /* Modal Pop-up Chi Tiết & Form */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(6px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
 
         .modal-content {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            width: 100%;
-            max-width: 600px;
-            border-radius: 16px;
-            padding: 30px;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
+            width: 100%; max-width: 650px;
+            border-radius: 16px; padding: 30px; position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: translateY(20px); transition: transform 0.3s ease;
+            max-height: 90vh; overflow-y: auto;
         }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
 
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
+        .close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer; z-index: 10; }
         .close-btn:hover { color: var(--text-main); }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 15px;
-        }
+        .detail-body { display: flex; flex-direction: column; gap: 20px; }
+        .detail-poster { width: 100%; max-height: 380px; object-fit: contain; background-color: #000; border-radius: 12px; cursor: zoom-in; }
+        .detail-info { display: flex; flex-direction: column; gap: 12px; }
+        .detail-info h2 { font-size: 1.8rem; font-weight: 700; }
+        .detail-score { color: #fbbf24; font-size: 1.4rem; font-weight: 700; }
 
+        .lightbox-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95); display: flex; justify-content: center; align-items: center;
+            z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s ease; cursor: zoom-out;
+        }
+        .lightbox-overlay.active { opacity: 1; visibility: visible; }
+        .lightbox-img { max-width: 95vw; max-height: 95vh; object-fit: contain; border-radius: 8px; }
+
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px; }
         .form-group { display: flex; flex-direction: column; }
         .form-group.full-width { grid-column: 1 / -1; }
 
-        label {
-            margin-bottom: 6px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-        }
-
+        label { margin-bottom: 6px; font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; }
         input {
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: #0f0f17;
-            color: var(--text-main);
-            font-size: 0.9rem;
-            font-family: 'Outfit', sans-serif;
+            padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color);
+            background-color: var(--bg-color); color: var(--text-main); font-size: 0.9rem; font-family: 'Outfit', sans-serif;
         }
+        input:focus { outline: none; border-color: var(--accent); }
 
-        input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .range-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        input[type="range"] {
-            flex-grow: 1;
-            accent-color: var(--accent);
-            cursor: pointer;
-        }
+        .range-wrapper { display: flex; align-items: center; gap: 10px; }
+        input[type="range"] { flex-grow: 1; accent-color: var(--accent); cursor: pointer; }
 
         button.submit-btn {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
+            background-color: var(--accent); color: white; border: none; padding: 12px;
+            font-size: 1rem; font-weight: 600; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px;
         }
-
         button.submit-btn:hover { background-color: var(--accent-hover); }
+
+        /* Popup Achievement (Tiếng Anh) */
+        .badge-popup-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 3000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        .badge-popup-overlay.active { opacity: 1; visibility: visible; }
+
+        .badge-card {
+            background: var(--card-bg);
+            border: 2px solid var(--accent);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.4);
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .badge-popup-overlay.active .badge-card { transform: scale(1); }
+
+        .badge-icon { font-size: 4rem; margin-bottom: 15px; animation: bounce 1s infinite alternate; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+
+        .badge-title {
+            font-size: 1.8rem; font-weight: 800; color: #fbbf24; margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        .badge-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 25px; line-height: 1.5; }
+
+        .badge-close-btn {
+            background: var(--accent); color: white; border: none; padding: 12px 30px;
+            font-size: 1rem; font-weight: 700; border-radius: 12px; cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .badge-close-btn:hover { background-color: var(--accent-hover); transform: scale(1.05); }
     </style>
 </head>
 <body>
 
-    <!-- ================= 1. MENU CHÍNH (MAIN MENU) ================= -->
+    <!-- ================= 1. MENU CHÍNH ================= -->
     <div id="mainMenuScreen">
+        <!-- Icon Con Mèo Nguyên Bản ở Góc Trái -->
+        <div class="menu-top-left">
+            <button class="cat-icon-btn" id="catBtn1" title="Meow! Click me!">🐈</button>
+        </div>
+
+        <div class="menu-top-bar">
+            <div class="theme-picker-wrapper">
+                <button class="theme-toggle-btn" id="themeBtn1" title="Customize Theme">🎨</button>
+                <div class="theme-menu" id="themeMenu1">
+                    <button class="theme-option-btn" onclick="selectTheme('dark')">
+                        <span class="theme-dot" style="background: #0f1016;"></span> Classic Dark
+                    </button>
+                    <button class="theme-option-btn" onclick="selectTheme('light')">
+                        <span class="theme-dot" style="background: #f8fafc;"></span> Minimal White
+                    </button>
+                    <button class="theme-option-btn" onclick="selectTheme('violet')">
+                        <span class="theme-dot" style="background: #d946ef;"></span> Electric Violet
+                    </button>
+                    <button class="theme-option-btn" onclick="selectTheme('mint')">
+                        <span class="theme-dot" style="background: #10b981;"></span> Mint Fresh
+                    </button>
+                    <button class="theme-option-btn" onclick="selectTheme('amber')">
+                        <span class="theme-dot" style="background: #f59e0b;"></span> Warm Amber
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div class="menu-header">
             <h1>Pow's <span>Playground</span></h1>
-            <p>Chọn một mục để bắt đầu khám phá</p>
+            <p>Select a category to start exploring</p>
         </div>
 
         <div class="menu-grid">
-            <!-- Mục Điện ảnh -->
             <div class="menu-card" id="btnGoCinema">
                 <div class="icon">🎬</div>
-                <h3>Điện Ảnh</h3>
-                <p>Theo dõi và lưu trữ danh sách các bộ phim đã xem</p>
+                <h3>Cinema</h3>
+                <p>Track and store your watched movie collection</p>
             </div>
-
-            <!-- Các mục chờ nâng cấp sau này -->
             <div class="menu-card disabled">
-                <span class="badge-coming-soon">Sắp có</span>
+                <span class="badge-coming-soon">Soon</span>
                 <div class="icon">🎵</div>
-                <h3>Âm Nhạc</h3>
-                <p>Đánh giá các Album và bài hát yêu thích</p>
+                <h3>Music</h3>
+                <p>Rate your favorite albums and tracks</p>
             </div>
-
             <div class="menu-card disabled">
-                <span class="badge-coming-soon">Sắp có</span>
+                <span class="badge-coming-soon">Soon</span>
                 <div class="icon">📚</div>
-                <h3>Sách & Truyện</h3>
-                <p>Ghi chú cảm nhận các cuốn sách đã đọc</p>
+                <h3>Books</h3>
+                <p>Note your thoughts on books read</p>
             </div>
-
             <div class="menu-card disabled">
-                <span class="badge-coming-soon">Sắp có</span>
+                <span class="badge-coming-soon">Soon</span>
                 <div class="icon">🎮</div>
-                <h3>Trò Chơi</h3>
-                <p>Lưu trữ trải nghiệm các tựa game</p>
+                <h3>Gaming</h3>
+                <p>Log your gaming experiences</p>
             </div>
         </div>
     </div>
 
 
-    <!-- ================= 2. GIAO DIỆN ĐIỆN ẢNH (CINEMA SECTION) ================= -->
+    <!-- ================= 2. GIAO DIỆN ĐIỆN ẢNH ================= -->
     <div id="cinemaScreen">
-        <!-- Sticky Navigation -->
         <nav>
             <div class="nav-left">
-                <button class="back-btn" id="btnBackMenu">❮ Menu chính</button>
+                <button class="cat-icon-btn" id="catBtn2" title="Meow! Click me!">🐈</button>
+                <button class="back-btn" id="btnBackMenu">❮ Main Menu</button>
                 <div class="logo">Pow's <span>Playground</span></div>
             </div>
             <div class="nav-actions">
-                <button class="btn-primary" id="openModalBtn">+ Thêm Phim</button>
+                <div class="theme-picker-wrapper">
+                    <button class="theme-toggle-btn" id="themeBtn2" title="Customize Theme">🎨</button>
+                    <div class="theme-menu" id="themeMenu2">
+                        <button class="theme-option-btn" onclick="selectTheme('dark')">
+                            <span class="theme-dot" style="background: #0f1016;"></span> Classic Dark
+                        </button>
+                        <button class="theme-option-btn" onclick="selectTheme('light')">
+                            <span class="theme-dot" style="background: #f8fafc;"></span> Minimal White
+                        </button>
+                        <button class="theme-option-btn" onclick="selectTheme('violet')">
+                            <span class="theme-dot" style="background: #d946ef;"></span> Electric Violet
+                        </button>
+                        <button class="theme-option-btn" onclick="selectTheme('mint')">
+                            <span class="theme-dot" style="background: #10b981;"></span> Mint Fresh
+                        </button>
+                        <button class="theme-option-btn" onclick="selectTheme('amber')">
+                            <span class="theme-dot" style="background: #f59e0b;"></span> Warm Amber
+                        </button>
+                    </div>
+                </div>
+                <button class="btn-primary" id="openAddModalBtn">+ Add Movie</button>
             </div>
         </nav>
 
-        <!-- Main Container -->
         <div class="container">
-            <!-- Controls: Search & Sort -->
             <div class="controls-bar">
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm theo tên phim, đạo diễn...">
+                    <input type="text" id="searchInput" placeholder="🔍 Search by movie title, director...">
                 </div>
-                <div class="sort-box">
-                    <select id="sortSelect">
-                        <option value="newest">Mới nhất</option>
-                        <option value="score-desc">Điểm số: Cao đến thấp</option>
-                        <option value="score-asc">Điểm số: Thấp đến cao</option>
-                    </select>
+                <button class="filter-toggle-btn" id="filterToggleBtn">⚙️ Filter & Sort</button>
+            </div>
+
+            <div class="filter-dropdown" id="filterDropdown">
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label for="decadeFilter">Decade</label>
+                        <select id="decadeFilter"><option value="">All Decades</option></select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="directorFilter">Director</label>
+                        <select id="directorFilter"><option value="">All Directors</option></select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="countryFilter">Country</label>
+                        <select id="countryFilter"><option value="">All Countries</option></select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sortSelect">Sort By</label>
+                        <select id="sortSelect">
+                            <option value="newest">Newest</option>
+                            <option value="score-desc">Score: High to Low</option>
+                            <option value="score-asc">Score: Low to High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn-reset" id="resetFiltersBtn">Reset All</button>
                 </div>
             </div>
 
-            <!-- Gallery Grid -->
             <div class="reviews-grid" id="reviewsGrid"></div>
         </div>
 
-        <!-- Modal Pop-up Form -->
-        <div class="modal-overlay" id="modalOverlay">
+        <!-- Modal Thêm/Sửa -->
+        <div class="modal-overlay" id="formModalOverlay">
             <div class="modal-content">
-                <button class="close-btn" id="closeModalBtn">✕</button>
-                <h2 style="margin-bottom: 20px; font-weight: 600;">✨ Thêm Phim Mới</h2>
+                <button class="close-btn" id="closeFormModalBtn">✕</button>
+                <h2 id="formModalTitle" style="margin-bottom: 20px; font-weight: 600;">✨ Add New Movie</h2>
                 
                 <form id="reviewForm">
+                    <input type="hidden" id="editIndex" value="-1">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="title">Tên phim</label>
-                            <input type="text" id="title" required placeholder="Ví dụ: Interstellar">
+                            <label for="title">Movie Title</label>
+                            <input type="text" id="title" required placeholder="e.g. Interstellar">
                         </div>
                         <div class="form-group">
-                            <label for="director">Đạo diễn</label>
-                            <input type="text" id="director" required placeholder="Ví dụ: Christopher Nolan">
+                            <label for="director">Director</label>
+                            <input type="text" id="director" required placeholder="e.g. Christopher Nolan">
                         </div>
                         <div class="form-group">
-                            <label for="year">Năm sản xuất</label>
+                            <label for="year">Release Year</label>
                             <input type="number" id="year" required min="1888" max="2099" placeholder="2014">
                         </div>
                         <div class="form-group">
-                            <label for="country">Quốc gia</label>
-                            <input type="text" id="country" required placeholder="Mỹ, Anh...">
+                            <label for="country">Country</label>
+                            <input type="text" id="country" required placeholder="USA, UK...">
                         </div>
                         <div class="form-group full-width">
-                            <label for="score">Điểm số (0.0 - 100.0)</label>
+                            <label for="score">Score (0.0 - 100.0)</label>
                             <div class="range-wrapper">
                                 <input type="range" id="scoreRange" min="0" max="100" step="0.1" value="85.0">
                                 <input type="number" id="score" min="0" max="100" step="0.1" value="85.0" required style="width: 80px; text-align: center;">
                             </div>
                         </div>
                         <div class="form-group full-width">
-                            <label for="image">Ảnh Poster (Tải tệp từ máy)</label>
-                            <input type="file" id="image" accept="image/*" required>
+                            <label for="image">Poster Image (Upload file)</label>
+                            <input type="file" id="image" accept="image/*">
+                            <small style="color: var(--text-secondary); margin-top: 4px;" id="imageHelp">*(Required for new movies)</small>
                         </div>
                     </div>
-                    <button type="submit" class="submit-btn">Lưu Phim</button>
+                    <button type="submit" class="submit-btn" id="formSubmitBtn">Save Movie</button>
                 </form>
             </div>
+        </div>
+
+        <!-- Modal Chi Tiết -->
+        <div class="modal-overlay" id="detailModalOverlay">
+            <div class="modal-content" style="max-width: 650px;">
+                <button class="close-btn" id="closeDetailModalBtn">✕</button>
+                <div class="detail-body" id="detailContent"></div>
+            </div>
+        </div>
+
+        <!-- Lightbox -->
+        <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
+            <img src="" alt="Full Poster" class="lightbox-img" id="lightboxImg">
+        </div>
+    </div>
+
+    <!-- Modal Pop-up Thành Tựu Cats Lover (Tiếng Anh) -->
+    <div class="badge-popup-overlay" id="badgePopupOverlay">
+        <div class="badge-card">
+            <div class="badge-icon">👑🐈✨</div>
+            <div class="badge-title">ACHIEVEMENT UNLOCKED!</div>
+            <p class="badge-desc">Congratulations on earning the exclusive title:<br><strong style="color: var(--accent); font-size: 1.2rem;">"Cats Lover"</strong></p>
+            <button class="badge-close-btn" onclick="closeBadgePopup()">Awesome!</button>
         </div>
     </div>
 
 <script>
-    // Navigation Routing
+    // --- HỆ THỐNG ÂM THANH UI VÀ TIẾNG MÈO KÊU (WEB AUDIO API) ---
+    let audioCtx = null;
+
+    function playClickSound() {
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.04);
+
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.04);
+        } catch (e) {}
+    }
+
+    // Hiệu ứng âm thanh tiếng "Meow" mô phỏng vui nhộn và đáng yêu
+    function playMeowSound() {
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'triangle';
+            // Tạo cao độ uốn lượn đặc trưng của tiếng mèo kêu "me-o-w"
+            osc.frequency.setValueAtTime(450, now);
+            osc.frequency.linearRampToValueAtTime(750, now + 0.15);
+            osc.frequency.linearRampToValueAtTime(500, now + 0.35);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.12, now + 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.35);
+        } catch (e) {}
+    }
+
+    document.addEventListener('click', (e) => {
+        const target = e.target.closest('button, .menu-card, select, .poster-container, .theme-option-btn');
+        if (target && !target.classList.contains('cat-icon-btn')) {
+            playClickSound();
+        }
+    });
+
+
+    // --- HỆ THỐNG CATS LOVER EASTER EGG ---
+    let catClickCount = parseInt(localStorage.getItem('pow_cat_clicks')) || 0;
+    const badgePopupOverlay = document.getElementById('badgePopupOverlay');
+
+    function handleCatClick() {
+        playMeowSound(); // Phát tiếng mèo kêu mỗi khi bấm
+        catClickCount++;
+        localStorage.setItem('pow_cat_clicks', catClickCount);
+
+        if (catClickCount === 10 || (catClickCount > 10 && catClickCount % 10 === 0)) {
+            badgePopupOverlay.classList.add('active');
+        }
+    }
+
+    function closeBadgePopup() {
+        badgePopupOverlay.classList.remove('active');
+    }
+
+    document.getElementById('catBtn1').addEventListener('click', handleCatClick);
+    document.getElementById('catBtn2').addEventListener('click', handleCatClick);
+
+
+    // --- THEME SWITCHER SYSTEM ---
+    const themeBtn1 = document.getElementById('themeBtn1');
+    const themeBtn2 = document.getElementById('themeBtn2');
+    const themeMenu1 = document.getElementById('themeMenu1');
+    const themeMenu2 = document.getElementById('themeMenu2');
+
+    themeBtn1.addEventListener('click', (e) => { e.stopPropagation(); themeMenu1.classList.toggle('active'); });
+    themeBtn2.addEventListener('click', (e) => { e.stopPropagation(); themeMenu2.classList.toggle('active'); });
+
+    document.addEventListener('click', () => {
+        themeMenu1.classList.remove('active');
+        themeMenu2.classList.remove('active');
+    });
+
+    function selectTheme(themeName) {
+        if (themeName === 'dark') {
+            document.documentElement.removeAttribute('data-theme');
+        } else {
+            document.documentElement.setAttribute('data-theme', themeName);
+        }
+        localStorage.setItem('pow_playground_theme_choice', themeName);
+        themeMenu1.classList.remove('active');
+        themeMenu2.classList.remove('active');
+    }
+
+    const savedThemeChoice = localStorage.getItem('pow_playground_theme_choice') || 'dark';
+    selectTheme(savedThemeChoice);
+
+    // Routing
     const mainMenuScreen = document.getElementById('mainMenuScreen');
     const cinemaScreen = document.getElementById('cinemaScreen');
-    const btnGoCinema = document.getElementById('btnGoCinema');
-    const btnBackMenu = document.getElementById('btnBackMenu');
-
-    btnGoCinema.addEventListener('click', () => {
+    document.getElementById('btnGoCinema').addEventListener('click', () => {
         mainMenuScreen.style.display = 'none';
         cinemaScreen.style.display = 'block';
     });
-
-    btnBackMenu.addEventListener('click', () => {
+    document.getElementById('btnBackMenu').addEventListener('click', () => {
         cinemaScreen.style.display = 'none';
         mainMenuScreen.style.display = 'flex';
     });
 
     // Elements & State
-    const modalOverlay = document.getElementById('modalOverlay');
-    const openModalBtn = document.getElementById('openModalBtn');
-    const closeModalBtn = document.getElementById('closeModalBtn');
+    const formModalOverlay = document.getElementById('formModalOverlay');
+    const detailModalOverlay = document.getElementById('detailModalOverlay');
+    const lightboxOverlay = document.getElementById('lightboxOverlay');
+    const lightboxImg = document.getElementById('lightboxImg');
+
+    const openAddModalBtn = document.getElementById('openAddModalBtn');
+    const closeFormModalBtn = document.getElementById('closeFormModalBtn');
+    const closeDetailModalBtn = document.getElementById('closeDetailModalBtn');
     const form = document.getElementById('reviewForm');
     const reviewsGrid = document.getElementById('reviewsGrid');
+    
+    const filterToggleBtn = document.getElementById('filterToggleBtn');
+    const filterDropdown = document.getElementById('filterDropdown');
+    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
     const searchInput = document.getElementById('searchInput');
+    const decadeFilter = document.getElementById('decadeFilter');
+    const directorFilter = document.getElementById('directorFilter');
+    const countryFilter = document.getElementById('countryFilter');
     const sortSelect = document.getElementById('sortSelect');
+
     const scoreRange = document.getElementById('scoreRange');
     const scoreInput = document.getElementById('score');
 
     let reviews = JSON.parse(localStorage.getItem('pow_playground_movies')) || [];
+    let currentImageBase64 = '';
 
-    // Toggle Modal
-    openModalBtn.addEventListener('click', () => modalOverlay.classList.add('active'));
-    closeModalBtn.addEventListener('click', () => modalOverlay.classList.remove('active'));
-    modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+    filterToggleBtn.addEventListener('click', () => filterDropdown.classList.toggle('active'));
+    resetFiltersBtn.addEventListener('click', () => {
+        decadeFilter.value = "";
+        directorFilter.value = "";
+        countryFilter.value = "";
+        sortSelect.value = "newest";
+        renderReviews();
     });
 
-    // Score Range Sync
+    openAddModalBtn.addEventListener('click', () => {
+        document.getElementById('formModalTitle').innerText = '✨ Add New Movie';
+        document.getElementById('formSubmitBtn').innerText = 'Save Movie';
+        document.getElementById('editIndex').value = '-1';
+        document.getElementById('image').required = true;
+        document.getElementById('imageHelp').style.display = 'inline';
+        form.reset();
+        scoreRange.value = 85.0;
+        scoreInput.value = 85.0;
+        currentImageBase64 = '';
+        formModalOverlay.classList.add('active');
+    });
+
+    closeFormModalBtn.addEventListener('click', () => formModalOverlay.classList.remove('active'));
+    closeDetailModalBtn.addEventListener('click', () => detailModalOverlay.classList.remove('active'));
+    
+    formModalOverlay.addEventListener('click', (e) => { if (e.target === formModalOverlay) formModalOverlay.classList.remove('active'); });
+    detailModalOverlay.addEventListener('click', (e) => { if (e.target === detailModalOverlay) detailModalOverlay.classList.remove('active'); });
+
     scoreRange.addEventListener('input', (e) => scoreInput.value = parseFloat(e.target.value).toFixed(1));
     scoreInput.addEventListener('input', (e) => {
         let val = parseFloat(e.target.value);
         if(!isNaN(val)) scoreRange.value = Math.min(Math.max(val, 0), 100);
     });
 
-    // Render Gallery
+    document.getElementById('image').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (uploadEvent) => currentImageBase64 = uploadEvent.target.result;
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function updateFilterOptions() {
+        const currentDecade = decadeFilter.value;
+        const currentDirector = directorFilter.value;
+        const currentCountry = countryFilter.value;
+
+        const decades = new Set();
+        const directors = new Set();
+        const countries = new Set();
+
+        reviews.forEach(item => {
+            if (item.year) decades.add(Math.floor(parseInt(item.year) / 10) * 10);
+            if (item.director) directors.add(item.director.trim());
+            if (item.country) countries.add(item.country.trim());
+        });
+
+        decadeFilter.innerHTML = '<option value="">All Decades</option>';
+        Array.from(decades).sort((a, b) => b - a).forEach(dec => {
+            decadeFilter.innerHTML += `<option value="${dec}">${dec}s</option>`;
+        });
+        decadeFilter.value = currentDecade;
+
+        directorFilter.innerHTML = '<option value="">All Directors</option>';
+        Array.from(directors).sort().forEach(dir => {
+            directorFilter.innerHTML += `<option value="${dir}">${dir}</option>`;
+        });
+        directorFilter.value = currentDirector;
+
+        countryFilter.innerHTML = '<option value="">All Countries</option>';
+        Array.from(countries).sort().forEach(c => {
+            countryFilter.innerHTML += `<option value="${c}">${c}</option>`;
+        });
+        countryFilter.value = currentCountry;
+    }
+
     function renderReviews() {
-        let filtered = reviews.filter(item => 
-            item.title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
-            item.director.toLowerCase().includes(searchInput.value.toLowerCase())
-        );
+        updateFilterOptions();
+
+        let filtered = reviews.filter(item => {
+            const matchesSearch = item.title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+                                  item.director.toLowerCase().includes(searchInput.value.toLowerCase());
+            
+            const itemDecade = Math.floor(parseInt(item.year) / 10) * 10;
+            const matchesDecade = decadeFilter.value === "" || itemDecade.toString() === decadeFilter.value;
+            const matchesDirector = directorFilter.value === "" || item.director.trim().toLowerCase() === directorFilter.value.toLowerCase();
+            const matchesCountry = countryFilter.value === "" || item.country.trim().toLowerCase() === countryFilter.value.toLowerCase();
+
+            return matchesSearch && matchesDecade && matchesDirector && matchesCountry;
+        });
 
         const sortValue = sortSelect.value;
-        if (sortValue === 'score-desc') {
-            filtered.sort((a, b) => b.score - a.score);
-        } else if (sortValue === 'score-asc') {
-            filtered.sort((a, b) => a.score - b.score);
-        }
+        if (sortValue === 'score-desc') filtered.sort((a, b) => b.score - a.score);
+        else if (sortValue === 'score-asc') filtered.sort((a, b) => a.score - b.score);
 
         reviewsGrid.innerHTML = '';
         
         if (filtered.length === 0) {
-            reviewsGrid.innerHTML = `<div class="empty-state">Chưa có phim nào được thêm.</div>`;
+            reviewsGrid.innerHTML = `<div class="empty-state">No matching movies found.</div>`;
             return;
         }
 
@@ -655,70 +1064,105 @@
             const card = document.createElement('div');
             card.className = 'movie-card';
             card.innerHTML = `
-                <div class="poster-container">
+                <div class="poster-container" onclick="showDetail(${originalIndex})">
                     <img src="${item.image}" alt="${item.title}" class="movie-poster">
                     <div class="score-badge">★ ${parseFloat(item.score).toFixed(1)}</div>
-                    <button class="delete-btn" onclick="deleteReview(${originalIndex})" title="Xóa phim">✕</button>
                 </div>
-                <div class="movie-info">
+                <div class="movie-info" onclick="showDetail(${originalIndex})">
                     <h3 class="movie-title">${item.title}</h3>
                     <div class="movie-meta">
                         <span>${item.year}</span>
                         <span>${item.country}</span>
-                        <span>ĐD: ${item.director}</span>
+                        <span>Dir: ${item.director}</span>
                     </div>
+                </div>
+                <div class="card-actions">
+                    <button class="action-btn edit" onclick="openEditModal(${originalIndex})" title="Edit">✎</button>
+                    <button class="action-btn delete" onclick="deleteReview(${originalIndex})" title="Delete">✕</button>
                 </div>
             `;
             reviewsGrid.appendChild(card);
         });
     }
 
-    // Delete Item
+    function showDetail(index) {
+        const item = reviews[index];
+        document.getElementById('detailContent').innerHTML = `
+            <img src="${item.image}" alt="${item.title}" class="detail-poster" onclick="openLightbox('${item.image}')" title="Click to view full screen">
+            <div class="detail-info">
+                <h2>${item.title}</h2>
+                <div class="detail-score">★ ${parseFloat(item.score).toFixed(1)} / 100 points</div>
+                <p><b>Director:</b> ${item.director}</p>
+                <p><b>Release Year:</b> ${item.year}</p>
+                <p><b>Country:</b> ${item.country}</p>
+            </div>
+        `;
+        detailModalOverlay.classList.add('active');
+    }
+
+    function openLightbox(imgSrc) {
+        lightboxImg.src = imgSrc;
+        lightboxOverlay.classList.add('active');
+    }
+
+    function closeLightbox() { lightboxOverlay.classList.remove('active'); }
+
+    function openEditModal(index) {
+        const item = reviews[index];
+        document.getElementById('formModalTitle').innerText = '✏️ Edit Movie Details';
+        document.getElementById('formSubmitBtn').innerText = 'Update Movie';
+        document.getElementById('editIndex').value = index;
+        
+        document.getElementById('title').value = item.title;
+        document.getElementById('director').value = item.director;
+        document.getElementById('year').value = item.year;
+        document.getElementById('country').value = item.country;
+        scoreRange.value = item.score;
+        scoreInput.value = item.score;
+        
+        currentImageBase64 = item.image;
+        document.getElementById('image').required = false;
+        document.getElementById('imageHelp').style.display = 'none';
+
+        formModalOverlay.classList.add('active');
+    }
+
     function deleteReview(index) {
-        if (confirm('Bạn có chắc chắn muốn xóa phim này không?')) {
+        if (confirm('Are you sure you want to delete this movie?')) {
             reviews.splice(index, 1);
             localStorage.setItem('pow_playground_movies', JSON.stringify(reviews));
             renderReviews();
         }
     }
 
-    // Submit Form
     form.addEventListener('submit', function(e) {
         e.preventDefault();
+        const editIndex = parseInt(document.getElementById('editIndex').value);
 
-        const fileInput = document.getElementById('image');
-        const file = fileInput.files[0];
+        const movieData = {
+            title: document.getElementById('title').value,
+            director: document.getElementById('director').value,
+            year: document.getElementById('year').value,
+            country: document.getElementById('country').value,
+            score: parseFloat(scoreInput.value),
+            image: currentImageBase64,
+            timestamp: editIndex === -1 ? Date.now() : reviews[editIndex].timestamp
+        };
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const newReview = {
-                    title: document.getElementById('title').value,
-                    director: document.getElementById('director').value,
-                    year: document.getElementById('year').value,
-                    country: document.getElementById('country').value,
-                    score: parseFloat(scoreInput.value),
-                    image: e.target.result,
-                    timestamp: Date.now()
-                };
+        if (editIndex === -1) reviews.unshift(movieData);
+        else reviews[editIndex] = movieData;
 
-                reviews.unshift(newReview);
-                localStorage.setItem('pow_playground_movies', JSON.stringify(reviews));
-                renderReviews();
-                form.reset();
-                scoreRange.value = 85.0;
-                scoreInput.value = 85.0;
-                modalOverlay.classList.remove('active');
-            };
-            reader.readAsDataURL(file);
-        }
+        localStorage.setItem('pow_playground_movies', JSON.stringify(reviews));
+        renderReviews();
+        formModalOverlay.classList.remove('active');
     });
 
-    // Filter Listeners
     searchInput.addEventListener('input', renderReviews);
+    decadeFilter.addEventListener('change', renderReviews);
+    directorFilter.addEventListener('change', renderReviews);
+    countryFilter.addEventListener('change', renderReviews);
     sortSelect.addEventListener('change', renderReviews);
 
-    // Initial Render
     renderReviews();
 </script>
 
