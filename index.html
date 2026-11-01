@@ -135,10 +135,22 @@
         }
 
         .sidebar-brand {
-            display: flex; align-items: center; gap: 12px; font-size: 1.3rem; font-weight: 800;
+            display: flex; align-items: center; justify-content: space-between; font-size: 1.3rem; font-weight: 800;
             letter-spacing: -0.5px; margin-bottom: 25px; color: var(--text-main);
         }
         .sidebar-brand span { color: var(--accent); filter: drop-shadow(0 0 8px var(--accent)); }
+
+        /* ICON BÁO UPDATE KẾ BÊN PHẢI POW'S HUB */
+        .update-announce-btn {
+            background: var(--glass-bg); border: 1.5px solid var(--glass-border);
+            color: var(--text-main); width: 34px; height: 34px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 0.95rem;
+            cursor: pointer; backdrop-filter: var(--glass-blur); position: relative;
+        }
+        .update-announce-btn:hover {
+            background: var(--glass-bg-hover); border-color: var(--accent);
+            transform: scale(1.1); box-shadow: 0 0 12px var(--accent);
+        }
 
         .sidebar-menu { display: flex; flex-direction: column; gap: 12px; flex-grow: 1; position: relative; }
 
@@ -151,7 +163,7 @@
         .sidebar-group-title:hover { background: var(--glass-bg-hover); border-color: var(--glass-border); }
         .sidebar-group-title.active { border-color: var(--accent); box-shadow: 0 0 15px var(--glass-border); }
 
-        /* FLOATING ARC MENU (ANIMATION RA VÀO LẦN LƯỢT TỪ TRÊN XUỐNG) */
+        /* FLOATING ARC MENU */
         .floating-sub-menu {
             position: absolute;
             left: calc(var(--sidebar-width) - 10px);
@@ -168,14 +180,10 @@
             color: var(--text-main); cursor: pointer; font-size: 1.2rem; border: 2px solid var(--glass-border);
             background: var(--glass-bg); backdrop-filter: var(--glass-blur);
             box-shadow: var(--glass-shadow);
-            
-            /* Trạng thái ẨN ban đầu: nằm thụt về sau sidebar */
             opacity: 0; 
             visibility: hidden;
             pointer-events: none;
             transform: translate(-30px, 0px) scale(0.6);
-            
-            /* Transition hiệu ứng di chuyển mượt mà */
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
                         opacity 0.3s ease, 
                         visibility 0.3s ease,
@@ -183,14 +191,12 @@
                         border-color 0.3s ease;
         }
 
-        /* --- THỜI GIAN DELAY KHI TẮT MENU (Thu vào từ trên xuống) --- */
         .item-cinema { transition-delay: 0.00s; }
         .item-music   { transition-delay: 0.05s; }
         .item-books   { transition-delay: 0.10s; }
         .item-gaming  { transition-delay: 0.15s; }
         .item-sports  { transition-delay: 0.20s; }
 
-        /* --- KHỦI MỞ MENU (Bung ra lần lượt từ trên xuống) --- */
         .floating-sub-menu.active .floating-item {
             opacity: 1;
             visibility: visible;
@@ -203,7 +209,6 @@
         .floating-sub-menu.active .item-gaming  { transform: translate(25px, 164px) scale(1); transition-delay: 0.20s; }
         .floating-sub-menu.active .item-sports  { transform: translate(10px, 216px) scale(1); transition-delay: 0.25s; }
 
-        /* Hover cố định vị trí, chỉ đổi ánh sáng nhẹ */
         .floating-item:hover {
             background: var(--glass-bg-hover);
             border-color: var(--accent);
@@ -265,24 +270,6 @@
             font-size: 0.95rem; font-weight: 700; border-radius: 14px; cursor: pointer; box-shadow: 0 4px 20px var(--accent);
         }
         .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 0 25px var(--accent); }
-
-        /* UPDATE BANNER */
-        .update-banner {
-            background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-            border: 2px solid var(--accent); border-radius: 16px; padding: 15px 20px; margin-bottom: 25px;
-            display: flex; align-items: center; justify-content: space-between; box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
-            animation: fadeInBanner 0.5s ease;
-        }
-        .update-banner.hidden { display: none; }
-        .update-content { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; color: var(--text-main); }
-        .update-badge { background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 8px; text-transform: uppercase; }
-        .update-close { background: none; border: none; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; padding: 4px; }
-        .update-close:hover { color: var(--text-main); }
-
-        @keyframes fadeInBanner {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
 
         .controls-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 15px; flex-wrap: wrap; }
 
@@ -381,6 +368,23 @@
             font-size: 1rem; font-weight: 700; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 10px;
         }
 
+        /* POPUP UPDATE MODAL */
+        .update-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 33, 66, 0.8);
+            backdrop-filter: blur(14px); display: flex; justify-content: center; align-items: center;
+            z-index: 3500; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        .update-modal-overlay.active { opacity: 1; visibility: visible; }
+        .update-modal-card {
+            background: var(--glass-bg); border: 2px solid var(--accent); backdrop-filter: var(--glass-blur);
+            border-radius: 24px; padding: 35px; width: 90%; max-width: 500px; position: relative;
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.3); text-align: left;
+        }
+        .update-modal-badge {
+            display: inline-block; background: var(--accent); color: #fff; font-size: 0.8rem;
+            font-weight: 700; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; margin-bottom: 15px;
+        }
+
         .badge-popup-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 33, 66, 0.85); backdrop-filter: blur(16px);
             display: flex; justify-content: center; align-items: center; z-index: 3000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
@@ -402,8 +406,10 @@
         <!-- SIDEBAR -->
         <aside class="app-sidebar">
             <div>
+                <!-- SIDEBAR BRAND & UPDATE ICON -->
                 <div class="sidebar-brand">
-                    <span>Pow's</span> Hub
+                    <div><span>Pow's</span> Hub</div>
+                    <button class="update-announce-btn" id="updateIconBtn" title="Xem thông báo cập nhật mới nhất">📢</button>
                 </div>
                 <nav class="sidebar-menu">
                     
@@ -413,7 +419,7 @@
                         <span style="font-size: 0.8rem;">▶</span>
                     </div>
 
-                    <!-- FLOATING ARC MENU (STAGGERED ANIMATION RA VÀO LẦN LƯỢT) -->
+                    <!-- FLOATING ARC MENU -->
                     <div class="floating-sub-menu" id="floatingPlayground">
                         <div class="floating-item active item-cinema" id="navCinema" title="Cinema" onclick="switchSubTab('tabCinema', this)">
                             <span>🎬</span>
@@ -480,15 +486,6 @@
                     <button class="btn-primary" id="openAddModalBtn">+ Add Movie</button>
                 </header>
 
-                <!-- UPDATE BANNER -->
-                <div class="update-banner" id="updateBanner">
-                    <div class="update-content">
-                        <span class="update-badge">New Update!</span>
-                        <span>✨ Thêm mục thể thao + nâng cấp giao diện: <b>Liquid glass, 3 loại background và Arc Menu!</b> </span>
-                    </div>
-                    <button class="update-close" id="closeUpdateBanner" title="Đóng thông báo">✕</button>
-                </div>
-
                 <div class="controls-bar">
                     <div class="search-box">
                         <input type="text" id="searchInput" placeholder="🔍 Search movie title, director...">
@@ -521,21 +518,38 @@
                     <div class="credits-list">
                         <div class="credits-item">
                             <span class="credits-label">Dev</span>
-                            <span class="credits-value">Gemn, Pows, Atus, HuyDoan</span>
+                            <span class="credits-value">Pows, Atus, HuyDoan</span>
                         </div>
                         <div class="credits-item">
                             <span class="credits-label">Giao diện, customs</span>
-                            <span class="credits-value">Gemn, Pows, Nguy3n</span>
+                            <span class="credits-value">Gemn, Pows</span>
                         </div>
                         <div class="credits-item">
                             <span class="credits-label">Versions</span>
-                            <span class="credits-value">Beta 0.1.1</span>
+                            <span class="credits-value">Beta 1.7</span>
                         </div>
                     </div>
                 </div>
             </section>
 
         </main>
+    </div>
+
+    <!-- POPUP THÔNG BÁO UPDATE KHI BẤM ICON 📢 -->
+    <div class="update-modal-overlay" id="updateModalOverlay">
+        <div class="update-modal-card">
+            <button class="close-btn" id="closeUpdateModalBtn">✕</button>
+            <span class="update-modal-badge">Latest Update!</span>
+            <h2 style="color: var(--text-main); margin-bottom: 12px; font-size: 1.4rem;">✨ Bản cập nhật mới</h2>
+            <!-- NỘI DUNG UPDATE BẠN TỰ CHỈNH SỬA Ở ĐÂY -->
+            <p style="color: var(--text-secondary); font-size: 1rem; line-height: 1.6; margin-bottom: 20px;">
+                - Tích hợp nút xem thông báo Update (📢) trực tiếp cạnh logo Pow's Hub.<br>
+                - Cập nhật hiệu ứng Arc Menu xuất hiện mượt mà.<br>
+                - Tối ưu hoá giao diện Liquid Glass.<br>
+                - Category mới: <b>Thể thao.</b>
+            </p>
+            <button class="btn-primary" style="width: 100%;" onclick="closeUpdateModal()">Đã hiểu!</button>
+        </div>
     </div>
 
     <!-- MODAL FORM (ADD & EDIT) -->
@@ -622,17 +636,20 @@
         appContainer.classList.add('visible');
     });
 
-    // UPDATE BANNER LOGIC
-    const updateBanner = document.getElementById('updateBanner');
-    const closeUpdateBanner = document.getElementById('closeUpdateBanner');
-    const CURRENT_UPDATE_ID = 'pow_update_staggered_arc_v1.5'; 
-    if (localStorage.getItem(CURRENT_UPDATE_ID) === 'closed') {
-        updateBanner.classList.add('hidden');
-    }
+    // UPDATE POPUP LOGIC
+    const updateIconBtn = document.getElementById('updateIconBtn');
+    const updateModalOverlay = document.getElementById('updateModalOverlay');
+    const closeUpdateModalBtn = document.getElementById('closeUpdateModalBtn');
 
-    closeUpdateBanner.addEventListener('click', () => {
-        updateBanner.classList.add('hidden');
-        localStorage.setItem(CURRENT_UPDATE_ID, 'closed');
+    updateIconBtn.addEventListener('click', () => {
+        playClickSound();
+        updateModalOverlay.classList.add('active');
+    });
+
+    window.closeUpdateModal = () => updateModalOverlay.classList.remove('active');
+    closeUpdateModalBtn.addEventListener('click', closeUpdateModal);
+    updateModalOverlay.addEventListener('click', (e) => {
+        if (e.target === updateModalOverlay) closeUpdateModal();
     });
 
     const groupPlayground = document.getElementById('groupPlayground');
