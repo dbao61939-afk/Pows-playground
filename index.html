@@ -85,7 +85,6 @@
             min-height: 100vh;
         }
 
-        /* Icon Con Mèo ở Góc Trái */
         .cat-icon-btn {
             background: var(--card-bg);
             color: var(--text-main);
@@ -111,7 +110,6 @@
             transform: scale(0.95);
         }
 
-        /* Theme Picker Wrapper & Menu */
         .theme-picker-wrapper {
             position: relative;
             display: inline-block;
@@ -193,7 +191,7 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        /* ---------------- GIAO DIỆN MENU CHÍNH (MAIN MENU) ---------------- */
+        /* ---------------- GIAO DIỆN MENU CHÍNH ---------------- */
         #mainMenuScreen {
             display: flex;
             flex-direction: column;
@@ -284,8 +282,7 @@
             text-transform: uppercase;
         }
 
-
-        /* ---------------- GIAO DIỆN PHIM (CINEMA SECTION) ---------------- */
+        /* ---------------- GIAO DIỆN PHIM ---------------- */
         #cinemaScreen {
             display: none;
             animation: fadeIn 0.4s ease-in-out;
@@ -414,7 +411,6 @@
         .filter-actions { display: flex; justify-content: flex-end; border-top: 1px solid var(--border-color); padding-top: 15px; }
         .btn-reset { background: var(--border-color); color: var(--text-main); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
 
-        /* Gallery Grid */
         .reviews-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -490,7 +486,6 @@
 
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 80px 20px; color: var(--text-secondary); font-size: 1.1rem; }
 
-        /* Modal Pop-up Chi Tiết & Form */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -549,7 +544,6 @@
         }
         button.submit-btn:hover { background-color: var(--accent-hover); }
 
-        /* Popup Achievement (Tiếng Anh) */
         .badge-popup-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -593,9 +587,8 @@
 </head>
 <body>
 
-    <!-- ================= 1. MENU CHÍNH ================= -->
+    <!-- MENU CHÍNH -->
     <div id="mainMenuScreen">
-        <!-- Icon Con Mèo Nguyên Bản ở Góc Trái -->
         <div class="menu-top-left">
             <button class="cat-icon-btn" id="catBtn1" title="Meow! Click me!">🐈</button>
         </div>
@@ -655,8 +648,7 @@
         </div>
     </div>
 
-
-    <!-- ================= 2. GIAO DIỆN ĐIỆN ẢNH ================= -->
+    <!-- GIAO DIỆN ĐIỆN ẢNH -->
     <div id="cinemaScreen">
         <nav>
             <div class="nav-left">
@@ -728,7 +720,6 @@
             <div class="reviews-grid" id="reviewsGrid"></div>
         </div>
 
-        <!-- Modal Thêm/Sửa -->
         <div class="modal-overlay" id="formModalOverlay">
             <div class="modal-content">
                 <button class="close-btn" id="closeFormModalBtn">✕</button>
@@ -771,7 +762,6 @@
             </div>
         </div>
 
-        <!-- Modal Chi Tiết -->
         <div class="modal-overlay" id="detailModalOverlay">
             <div class="modal-content" style="max-width: 650px;">
                 <button class="close-btn" id="closeDetailModalBtn">✕</button>
@@ -779,13 +769,11 @@
             </div>
         </div>
 
-        <!-- Lightbox -->
         <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
             <img src="" alt="Full Poster" class="lightbox-img" id="lightboxImg">
         </div>
     </div>
 
-    <!-- Modal Pop-up Thành Tựu Cats Lover (Tiếng Anh) -->
     <div class="badge-popup-overlay" id="badgePopupOverlay">
         <div class="badge-card">
             <div class="badge-icon">👑🐈✨</div>
@@ -795,64 +783,64 @@
         </div>
     </div>
 
-<script>
-    // --- HỆ THỐNG ÂM THANH UI VÀ TIẾNG MÈO KÊU (WEB AUDIO API) ---
-    let audioCtx = null;
+<!-- FIREBASE REALTIME BACKEND SCRIPT -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+    // CẤU HÌNH ĐÃ ĐƯỢC ĐIỀN CHUẨN TỪ FIREBASE CỦA BẠN
+    const firebaseConfig = {
+        apiKey: "AIzaSyBsDwP9rsWMuGnRxKk53_AmtCn-0Heq-F0",
+        authDomain: "pows-playground.firebaseapp.com",
+        projectId: "pows-playground",
+        storageBucket: "pows-playground.appspot.com",
+        messagingSenderId: "977960049489",
+        appId: "1:977960049489:web:14286a19bc2dafbc061178"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const moviesRef = collection(db, "movies");
+
+    let reviews = [];
+    let currentImageBase64 = '';
+
+    // WEB AUDIO API
+    let audioCtx = null;
     function playClickSound() {
         try {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-
             osc.type = 'sine';
             osc.frequency.setValueAtTime(800, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.04);
-
             gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
-
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-
             osc.start();
             osc.stop(audioCtx.currentTime + 0.04);
         } catch (e) {}
     }
 
-    // Hiệu ứng âm thanh tiếng "Meow" mô phỏng vui nhộn và đáng yêu
     function playMeowSound() {
         try {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
             const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-
             osc.type = 'triangle';
-            // Tạo cao độ uốn lượn đặc trưng của tiếng mèo kêu "me-o-w"
             osc.frequency.setValueAtTime(450, now);
             osc.frequency.linearRampToValueAtTime(750, now + 0.15);
             osc.frequency.linearRampToValueAtTime(500, now + 0.35);
-
             gain.gain.setValueAtTime(0.001, now);
             gain.gain.linearRampToValueAtTime(0.12, now + 0.08);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-
             osc.start(now);
             osc.stop(now + 0.35);
         } catch (e) {}
@@ -860,35 +848,27 @@
 
     document.addEventListener('click', (e) => {
         const target = e.target.closest('button, .menu-card, select, .poster-container, .theme-option-btn');
-        if (target && !target.classList.contains('cat-icon-btn')) {
-            playClickSound();
-        }
+        if (target && !target.classList.contains('cat-icon-btn')) playClickSound();
     });
 
-
-    // --- HỆ THỐNG CATS LOVER EASTER EGG ---
+    // EASTER EGG CATS LOVER
     let catClickCount = parseInt(localStorage.getItem('pow_cat_clicks')) || 0;
     const badgePopupOverlay = document.getElementById('badgePopupOverlay');
 
     function handleCatClick() {
-        playMeowSound(); // Phát tiếng mèo kêu mỗi khi bấm
+        playMeowSound();
         catClickCount++;
         localStorage.setItem('pow_cat_clicks', catClickCount);
-
         if (catClickCount === 10 || (catClickCount > 10 && catClickCount % 10 === 0)) {
             badgePopupOverlay.classList.add('active');
         }
     }
-
-    function closeBadgePopup() {
-        badgePopupOverlay.classList.remove('active');
-    }
+    window.closeBadgePopup = () => badgePopupOverlay.classList.remove('active');
 
     document.getElementById('catBtn1').addEventListener('click', handleCatClick);
     document.getElementById('catBtn2').addEventListener('click', handleCatClick);
 
-
-    // --- THEME SWITCHER SYSTEM ---
+    // THEME SWITCHER
     const themeBtn1 = document.getElementById('themeBtn1');
     const themeBtn2 = document.getElementById('themeBtn2');
     const themeMenu1 = document.getElementById('themeMenu1');
@@ -896,27 +876,21 @@
 
     themeBtn1.addEventListener('click', (e) => { e.stopPropagation(); themeMenu1.classList.toggle('active'); });
     themeBtn2.addEventListener('click', (e) => { e.stopPropagation(); themeMenu2.classList.toggle('active'); });
-
     document.addEventListener('click', () => {
         themeMenu1.classList.remove('active');
         themeMenu2.classList.remove('active');
     });
 
-    function selectTheme(themeName) {
-        if (themeName === 'dark') {
-            document.documentElement.removeAttribute('data-theme');
-        } else {
-            document.documentElement.setAttribute('data-theme', themeName);
-        }
+    window.selectTheme = (themeName) => {
+        if (themeName === 'dark') document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.setAttribute('data-theme', themeName);
         localStorage.setItem('pow_playground_theme_choice', themeName);
         themeMenu1.classList.remove('active');
         themeMenu2.classList.remove('active');
-    }
+    };
+    selectTheme(localStorage.getItem('pow_playground_theme_choice') || 'dark');
 
-    const savedThemeChoice = localStorage.getItem('pow_playground_theme_choice') || 'dark';
-    selectTheme(savedThemeChoice);
-
-    // Routing
+    // ROUTING
     const mainMenuScreen = document.getElementById('mainMenuScreen');
     const cinemaScreen = document.getElementById('cinemaScreen');
     document.getElementById('btnGoCinema').addEventListener('click', () => {
@@ -928,7 +902,14 @@
         mainMenuScreen.style.display = 'flex';
     });
 
-    // Elements & State
+    // LẤY DỮ LIỆU ĐỒNG BỘ THỜI GIAN THỰC TỪ FIREBASE
+    const q = query(moviesRef, orderBy("timestamp", "desc"));
+    onSnapshot(q, (snapshot) => {
+        reviews = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderReviews();
+    });
+
+    // ELEMENTS
     const formModalOverlay = document.getElementById('formModalOverlay');
     const detailModalOverlay = document.getElementById('detailModalOverlay');
     const lightboxOverlay = document.getElementById('lightboxOverlay');
@@ -953,15 +934,9 @@
     const scoreRange = document.getElementById('scoreRange');
     const scoreInput = document.getElementById('score');
 
-    let reviews = JSON.parse(localStorage.getItem('pow_playground_movies')) || [];
-    let currentImageBase64 = '';
-
     filterToggleBtn.addEventListener('click', () => filterDropdown.classList.toggle('active'));
     resetFiltersBtn.addEventListener('click', () => {
-        decadeFilter.value = "";
-        directorFilter.value = "";
-        countryFilter.value = "";
-        sortSelect.value = "newest";
+        decadeFilter.value = ""; directorFilter.value = ""; countryFilter.value = ""; sortSelect.value = "newest";
         renderReviews();
     });
 
@@ -972,15 +947,13 @@
         document.getElementById('image').required = true;
         document.getElementById('imageHelp').style.display = 'inline';
         form.reset();
-        scoreRange.value = 85.0;
-        scoreInput.value = 85.0;
+        scoreRange.value = 85.0; scoreInput.value = 85.0;
         currentImageBase64 = '';
         formModalOverlay.classList.add('active');
     });
 
     closeFormModalBtn.addEventListener('click', () => formModalOverlay.classList.remove('active'));
     closeDetailModalBtn.addEventListener('click', () => detailModalOverlay.classList.remove('active'));
-    
     formModalOverlay.addEventListener('click', (e) => { if (e.target === formModalOverlay) formModalOverlay.classList.remove('active'); });
     detailModalOverlay.addEventListener('click', (e) => { if (e.target === detailModalOverlay) detailModalOverlay.classList.remove('active'); });
 
@@ -1015,21 +988,15 @@
         });
 
         decadeFilter.innerHTML = '<option value="">All Decades</option>';
-        Array.from(decades).sort((a, b) => b - a).forEach(dec => {
-            decadeFilter.innerHTML += `<option value="${dec}">${dec}s</option>`;
-        });
+        Array.from(decades).sort((a, b) => b - a).forEach(dec => decadeFilter.innerHTML += `<option value="${dec}">${dec}s</option>`);
         decadeFilter.value = currentDecade;
 
         directorFilter.innerHTML = '<option value="">All Directors</option>';
-        Array.from(directors).sort().forEach(dir => {
-            directorFilter.innerHTML += `<option value="${dir}">${dir}</option>`;
-        });
+        Array.from(directors).sort().forEach(dir => directorFilter.innerHTML += `<option value="${dir}">${dir}</option>`);
         directorFilter.value = currentDirector;
 
         countryFilter.innerHTML = '<option value="">All Countries</option>';
-        Array.from(countries).sort().forEach(c => {
-            countryFilter.innerHTML += `<option value="${c}">${c}</option>`;
-        });
+        Array.from(countries).sort().forEach(c => countryFilter.innerHTML += `<option value="${c}">${c}</option>`);
         countryFilter.value = currentCountry;
     }
 
@@ -1039,12 +1006,10 @@
         let filtered = reviews.filter(item => {
             const matchesSearch = item.title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
                                   item.director.toLowerCase().includes(searchInput.value.toLowerCase());
-            
             const itemDecade = Math.floor(parseInt(item.year) / 10) * 10;
             const matchesDecade = decadeFilter.value === "" || itemDecade.toString() === decadeFilter.value;
             const matchesDirector = directorFilter.value === "" || item.director.trim().toLowerCase() === directorFilter.value.toLowerCase();
             const matchesCountry = countryFilter.value === "" || item.country.trim().toLowerCase() === countryFilter.value.toLowerCase();
-
             return matchesSearch && matchesDecade && matchesDirector && matchesCountry;
         });
 
@@ -1053,22 +1018,20 @@
         else if (sortValue === 'score-asc') filtered.sort((a, b) => a.score - b.score);
 
         reviewsGrid.innerHTML = '';
-        
         if (filtered.length === 0) {
             reviewsGrid.innerHTML = `<div class="empty-state">No matching movies found.</div>`;
             return;
         }
 
         filtered.forEach((item) => {
-            const originalIndex = reviews.indexOf(item);
             const card = document.createElement('div');
             card.className = 'movie-card';
             card.innerHTML = `
-                <div class="poster-container" onclick="showDetail(${originalIndex})">
+                <div class="poster-container" onclick="showDetail('${item.id}')">
                     <img src="${item.image}" alt="${item.title}" class="movie-poster">
                     <div class="score-badge">★ ${parseFloat(item.score).toFixed(1)}</div>
                 </div>
-                <div class="movie-info" onclick="showDetail(${originalIndex})">
+                <div class="movie-info" onclick="showDetail('${item.id}')">
                     <h3 class="movie-title">${item.title}</h3>
                     <div class="movie-meta">
                         <span>${item.year}</span>
@@ -1077,16 +1040,17 @@
                     </div>
                 </div>
                 <div class="card-actions">
-                    <button class="action-btn edit" onclick="openEditModal(${originalIndex})" title="Edit">✎</button>
-                    <button class="action-btn delete" onclick="deleteReview(${originalIndex})" title="Delete">✕</button>
+                    <button class="action-btn edit" onclick="openEditModal('${item.id}')" title="Edit">✎</button>
+                    <button class="action-btn delete" onclick="deleteReview('${item.id}')" title="Delete">✕</button>
                 </div>
             `;
             reviewsGrid.appendChild(card);
         });
     }
 
-    function showDetail(index) {
-        const item = reviews[index];
+    window.showDetail = (id) => {
+        const item = reviews.find(r => r.id === id);
+        if (!item) return;
         document.getElementById('detailContent').innerHTML = `
             <img src="${item.image}" alt="${item.title}" class="detail-poster" onclick="openLightbox('${item.image}')" title="Click to view full screen">
             <div class="detail-info">
@@ -1098,20 +1062,20 @@
             </div>
         `;
         detailModalOverlay.classList.add('active');
-    }
+    };
 
-    function openLightbox(imgSrc) {
+    window.openLightbox = (imgSrc) => {
         lightboxImg.src = imgSrc;
         lightboxOverlay.classList.add('active');
-    }
+    };
+    window.closeLightbox = () => lightboxOverlay.classList.remove('active');
 
-    function closeLightbox() { lightboxOverlay.classList.remove('active'); }
-
-    function openEditModal(index) {
-        const item = reviews[index];
+    window.openEditModal = (id) => {
+        const item = reviews.find(r => r.id === id);
+        if (!item) return;
         document.getElementById('formModalTitle').innerText = '✏️ Edit Movie Details';
         document.getElementById('formSubmitBtn').innerText = 'Update Movie';
-        document.getElementById('editIndex').value = index;
+        document.getElementById('editIndex').value = id;
         
         document.getElementById('title').value = item.title;
         document.getElementById('director').value = item.director;
@@ -1123,21 +1087,18 @@
         currentImageBase64 = item.image;
         document.getElementById('image').required = false;
         document.getElementById('imageHelp').style.display = 'none';
-
         formModalOverlay.classList.add('active');
-    }
+    };
 
-    function deleteReview(index) {
+    window.deleteReview = async (id) => {
         if (confirm('Are you sure you want to delete this movie?')) {
-            reviews.splice(index, 1);
-            localStorage.setItem('pow_playground_movies', JSON.stringify(reviews));
-            renderReviews();
+            await deleteDoc(doc(db, "movies", id));
         }
-    }
+    };
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        const editIndex = parseInt(document.getElementById('editIndex').value);
+        const editId = document.getElementById('editIndex').value;
 
         const movieData = {
             title: document.getElementById('title').value,
@@ -1146,14 +1107,15 @@
             country: document.getElementById('country').value,
             score: parseFloat(scoreInput.value),
             image: currentImageBase64,
-            timestamp: editIndex === -1 ? Date.now() : reviews[editIndex].timestamp
+            timestamp: editId === '-1' ? Date.now() : reviews.find(r => r.id === editId)?.timestamp || Date.now()
         };
 
-        if (editIndex === -1) reviews.unshift(movieData);
-        else reviews[editIndex] = movieData;
+        if (editId === '-1') {
+            await addDoc(moviesRef, movieData);
+        } else {
+            await updateDoc(doc(db, "movies", editId), movieData);
+        }
 
-        localStorage.setItem('pow_playground_movies', JSON.stringify(reviews));
-        renderReviews();
         formModalOverlay.classList.remove('active');
     });
 
@@ -1162,8 +1124,6 @@
     directorFilter.addEventListener('change', renderReviews);
     countryFilter.addEventListener('change', renderReviews);
     sortSelect.addEventListener('change', renderReviews);
-
-    renderReviews();
 </script>
 
 </body>
